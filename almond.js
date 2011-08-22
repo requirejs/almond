@@ -103,13 +103,16 @@ var requirejs, require, define;
         };
     }
 
-    function makeRequire(relName) {
+    function makeRequire(relName, forceSync) {
         return function () {
             //A version of a require function that passes a moduleName
             //value for items that may need to
             //look up paths relative to the moduleName
             var args = aps.call(arguments, 0);
             args.push(relName);
+            if (forceSync) {
+                args.push(true);
+            }
             return req.apply(null, args);
         };
     }
@@ -151,6 +154,7 @@ var requirejs, require, define;
         }
 
         return {
+            fullName: prefix ? prefix + '!' + name : name,
             name: name,
             prefix: prefix,
             plugin: plugin
@@ -174,7 +178,7 @@ var requirejs, require, define;
             if (deps) {
                 for (i = 0; i < deps.length; i++) {
                     map = makeMap(deps[i], relName);
-                    depName = map.name;
+                    depName = map.fullName;
 
                     //Fast path CommonJS standard dependencies.
                     if (depName === "require") {
@@ -194,7 +198,7 @@ var requirejs, require, define;
                     } else if (depName in defined) {
                         args[i] = defined[depName];
                     } else if (map.plugin) {
-                        map.plugin.load(depName, makeRequire(relName), makeLoad(depName), {});
+                        map.plugin.load(map.name, makeRequire(relName, true), makeLoad(depName), {});
                         args[i] = defined[depName];
                     } else {
                         args[i] = undefined;
@@ -225,7 +229,7 @@ var requirejs, require, define;
         }
     }
 
-    requirejs = req = function (deps, callback, relName) {
+    requirejs = req = function (deps, callback, relName, forceSync) {
         var moduleName, fullName, config;
 
         //Determine if have config object in the call.
@@ -250,7 +254,7 @@ var requirejs, require, define;
             relName = callback;
 
             //Normalize module name, if it contains . or ..
-            fullName =  makeMap(moduleName, relName).name;
+            fullName =  makeMap(moduleName, relName).fullName;
 
             if (!(fullName in defined)) {
                 throw new Error("Module name '" +
@@ -261,9 +265,13 @@ var requirejs, require, define;
         }
 
         //Simulate async callback;
-        setTimeout(function () {
+        if (forceSync) {
             main(null, deps, callback, relName);
-        }, 15);
+        } else {
+            setTimeout(function () {
+                main(null, deps, callback, relName);
+            }, 15);
+        }
 
         return req;
     };

@@ -1,2 +1,5 @@
 .DS_Store
 tests/simple-built.js
+tests/plugins/plugins-built.js
+tests/plugins/coffee-built.js
+tests/plugins/text-built.js
