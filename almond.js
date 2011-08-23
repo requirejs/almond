@@ -157,7 +157,6 @@ var requirejs, require, define;
         return {
             f: prefix ? prefix + '!' + name : name, //fullName
             n: name,
-            pr: prefix,
             p: plugin
         };
     }
