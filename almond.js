@@ -10,8 +10,8 @@ var requirejs, require, define;
 (function () {
 
     var defined = {},
-        aps = Array.prototype.slice,
-        ostring = Object.prototype.toString,
+        aps = [].slice,
+        ostring = {}.toString,
         req;
 
     function isFunction(it) {
@@ -22,7 +22,7 @@ var requirejs, require, define;
         return ostring.call(it) === "[object Array]";
     }
 
-    if (typeof define === "function" && define.amd) {
+    if (typeof define === "function") {
         //If a define is already in play via another AMD loader,
         //do not overwrite.
         return;
@@ -153,11 +153,12 @@ var requirejs, require, define;
             name = normalize(name, relName);
         }
 
+        //Using ridiculous property names for space reasons
         return {
-            fullName: prefix ? prefix + '!' + name : name,
-            name: name,
-            prefix: prefix,
-            plugin: plugin
+            f: prefix ? prefix + '!' + name : name, //fullName
+            n: name,
+            pr: prefix,
+            p: plugin
         };
     }
 
@@ -178,7 +179,7 @@ var requirejs, require, define;
             if (deps) {
                 for (i = 0; i < deps.length; i++) {
                     map = makeMap(deps[i], relName);
-                    depName = map.fullName;
+                    depName = map.f;
 
                     //Fast path CommonJS standard dependencies.
                     if (depName === "require") {
@@ -197,8 +198,8 @@ var requirejs, require, define;
                         cjsModule.setExports = makeSetExports(cjsModule);
                     } else if (depName in defined) {
                         args[i] = defined[depName];
-                    } else if (map.plugin) {
-                        map.plugin.load(map.name, makeRequire(relName, true), makeLoad(depName), {});
+                    } else if (map.p) {
+                        map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
                         args[i] = defined[depName];
                     } else {
                         args[i] = undefined;
@@ -254,12 +255,10 @@ var requirejs, require, define;
             relName = callback;
 
             //Normalize module name, if it contains . or ..
-            fullName =  makeMap(moduleName, relName).fullName;
+            fullName =  makeMap(moduleName, relName).f;
 
             if (!(fullName in defined)) {
-                throw new Error("Module name '" +
-                            fullName +
-                            "' has not been loaded.");
+                throw "No module '" + fullName;
             }
             return defined[fullName];
         }
