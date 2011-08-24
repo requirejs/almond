@@ -92,17 +92,6 @@ var requirejs, require, define;
         return name;
     }
 
-    /**
-     * Helper function that creates a setExports function for a "module"
-     * CommonJS dependency. Do this here to avoid creating a closure that
-     * is part of a loop.
-     */
-    function makeSetExports(moduleObj) {
-        return function (exports) {
-            moduleObj.exports = exports;
-        };
-    }
-
     function makeRequire(relName, forceSync) {
         return function () {
             //A version of a require function that passes a moduleName
@@ -194,7 +183,6 @@ var requirejs, require, define;
                             uri: '',
                             exports: defined[name]
                         };
-                        cjsModule.setExports = makeSetExports(cjsModule);
                     } else if (depName in defined) {
                         args[i] = defined[depName];
                     } else if (map.p) {
