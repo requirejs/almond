@@ -33,6 +33,7 @@ in a tiny wrapper that makes it easy for others to use your code even if they do
 It is best used for libraries or apps that use AMD and:
 
 * optimize all the modules into one file -- no dynamic code loading.
+* The modules **must** be optimized in order, so common dependencies, modules with no dependencies are first in the file. The RequireJS optimizer will do this for you.
 * all modules have IDs and dependency arrays in their define() calls -- the RequireJS optimizer will take care of this for you.
 * do not use requirejs.ready(). If you use explicit dependencies for all modules, and you place
 the optimized file in a script tag before the ending body tag, then this should not be a problem.
