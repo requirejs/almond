@@ -232,7 +232,7 @@ var requirejs, require, define;
     /**
      * Export require as a global, but only if it does not already exist.
      */
-    if (typeof require === "undefined") {
+    if (!require) {
         require = req;
     }
 
