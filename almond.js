@@ -11,53 +11,12 @@ var requirejs, require, define;
 
     var defined = {},
         aps = [].slice,
-        ostring = {}.toString,
         req;
-
-    function isFunction(it) {
-        return ostring.call(it) === "[object Function]";
-    }
-
-    function isArray(it) {
-        return ostring.call(it) === "[object Array]";
-    }
 
     if (typeof define === "function") {
         //If a define is already in play via another AMD loader,
         //do not overwrite.
         return;
-    }
-
-    /**
-     * Trims the . and .. from an array of path segments.
-     * It will keep a leading path segment if a .. will become
-     * the first path segment, to help with module name lookups,
-     * which act like paths, but can be remapped. But the end result,
-     * all paths that use this function should look normalized.
-     * NOTE: this method MODIFIES the input array.
-     * @param {Array} ary the array of path segments.
-     */
-    function trimDots(ary) {
-        var i, part;
-        for (i = 0; (part = ary[i]); i++) {
-            if (part === ".") {
-                ary.splice(i, 1);
-                i -= 1;
-            } else if (part === "..") {
-                if (i === 1 && (ary[2] === '..' || ary[0] === '..')) {
-                    //End of the line. Keep at least one non-dot
-                    //path segment at the front so it can be mapped
-                    //correctly to disk. Otherwise, there is likely
-                    //no path mapping for a path starting with '..'.
-                    //This can still fail, but catches the most reasonable
-                    //uses of ..
-                    break;
-                } else if (i > 0) {
-                    ary.splice(i - 1, 2);
-                    i -= 2;
-                }
-            }
-        }
     }
 
     /**
@@ -84,7 +43,29 @@ var requirejs, require, define;
                 baseName = baseName.slice(0, baseName.length - 1);
 
                 name = baseName.concat(name.split("/"));
-                trimDots(name);
+
+                //start trimDots
+                var i, part;
+                for (i = 0; (part = name[i]); i++) {
+                    if (part === ".") {
+                        name.splice(i, 1);
+                        i -= 1;
+                    } else if (part === "..") {
+                        if (i === 1 && (name[2] === '..' || name[0] === '..')) {
+                            //End of the line. Keep at least one non-dot
+                            //path segment at the front so it can be mapped
+                            //correctly to disk. Otherwise, there is likely
+                            //no path mapping for a path starting with '..'.
+                            //This can still fail, but catches the most reasonable
+                            //uses of ..
+                            break;
+                        } else if (i > 0) {
+                            name.splice(i - 1, 2);
+                            i -= 2;
+                        }
+                    }
+                }
+                //end trimDots
 
                 name = name.join("/");
             }
@@ -97,12 +78,7 @@ var requirejs, require, define;
             //A version of a require function that passes a moduleName
             //value for items that may need to
             //look up paths relative to the moduleName
-            var args = aps.call(arguments, 0);
-            args.push(relName);
-            if (forceSync) {
-                args.push(true);
-            }
-            return req.apply(null, args);
+            return req.apply(null, aps.call(arguments, 0).concat([relName, forceSync]));
         };
     }
 
@@ -128,8 +104,8 @@ var requirejs, require, define;
             index = name.indexOf('!');
 
         if (index !== -1) {
-            prefix = normalize(name.substring(0, index), relName);
-            name = name.substring(index + 1);
+            prefix = normalize(name.slice(0, index), relName);
+            name = name.slice(index + 1);
             plugin = defined[prefix];
 
             //Normalize according
@@ -152,7 +128,7 @@ var requirejs, require, define;
 
     function main(name, deps, callback, relName) {
         var args = [],
-            usingExports = false,
+            usingExports,
             cjsModule, depName, i, ret, map;
 
         //Use name if no relName
@@ -161,7 +137,7 @@ var requirejs, require, define;
         }
 
         //Call the callback to define the module, if necessary.
-        if (isFunction(callback)) {
+        if (typeof callback === 'function') {
             //Pull out the defined dependencies and pass the ordered
             //values to the callback.
             if (deps) {
@@ -188,8 +164,6 @@ var requirejs, require, define;
                     } else if (map.p) {
                         map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
                         args[i] = defined[depName];
-                    } else {
-                        args[i] = undefined;
                     }
                 }
             }
@@ -201,11 +175,8 @@ var requirejs, require, define;
                 //favor that over return value and exports. After that,
                 //favor a non-undefined return value over exports use.
                 if (cjsModule && cjsModule.exports !== undefined) {
-                    ret = defined[name] = cjsModule.exports;
-                } else if (ret === undefined && usingExports) {
-                    //exports already set the defined value.
-                    ret = defined[name];
-                } else {
+                    defined[name] = cjsModule.exports;
+                } else if (!usingExports) {
                     //Use the return value from the function.
                     defined[name] = ret;
                 }
@@ -218,36 +189,24 @@ var requirejs, require, define;
     }
 
     requirejs = req = function (deps, callback, relName, forceSync) {
-        var moduleName, fullName, config;
+        if (typeof deps === "string") {
 
-        //Determine if have config object in the call.
-        //Drop the config stuff on the ground.
-        if (!isArray(deps) && typeof deps !== "string") {
-            // deps is a config object
-            config = deps;
-            if (isArray(callback)) {
-                // Adjust args if there are dependencies
+            //Just return the module wanted. In this scenario, the
+            //deps arg is the module name, and second arg (if passed)
+            //is just the relName.
+            //Normalize module name, if it contains . or ..
+            return defined[makeMap(deps, callback).f];
+        } else if (!deps.splice) {
+            //deps is a config object, not an array.
+            //Drop the config stuff on the ground.
+            if (callback.splice) {
+                //callback is an array, which means it is a dependency list.
+                //Adjust args if there are dependencies
                 deps = callback;
                 callback = arguments[2];
             } else {
                 deps = [];
             }
-        }
-
-        if (typeof deps === "string") {
-
-            //Just return the module wanted. In this scenario, the
-            //second arg (if passed) is just the relModuleMap.
-            moduleName = deps;
-            relName = callback;
-
-            //Normalize module name, if it contains . or ..
-            fullName =  makeMap(moduleName, relName).f;
-
-            if (!(fullName in defined)) {
-                throw "No module '" + fullName;
-            }
-            return defined[fullName];
         }
 
         //Simulate async callback;
@@ -263,11 +222,11 @@ var requirejs, require, define;
     };
 
     /**
-     * Support require.config() to make it easier to cooperate with other
-     * AMD loaders on globally agreed names.
+     * Just drops the config on the floor, but returns req in case
+     * the config return value is used.
      */
-    req.config = function (config) {
-        return req(config);
+    req.config = function () {
+        return req;
     };
 
     /**
@@ -280,7 +239,9 @@ var requirejs, require, define;
     define = function (name, deps, callback) {
 
         //This module may not have dependencies
-        if (!isArray(deps)) {
+        if (!deps.splice) {
+            //deps is not an array, so probably means
+            //an object literal for the value. Adjust args.
             callback = deps;
             deps = [];
         }
