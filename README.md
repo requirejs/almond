@@ -11,7 +11,7 @@ they do not want to include a full AMD loader like RequireJS, since they do not 
 Some use cases, like mobile, are very sensitive to file sizes.
 
 By including almond in the built file, there is no need for RequireJS.
-almond is **948 bytes** when minified with Closure Compiler and gzipped.
+almond is **750 bytes** when minified with Closure Compiler and gzipped.
 
 Since it can support certain types of loader plugin-optimized resources, it is a great
 fit for a library that wants to use [text templates](http://requirejs.org/docs/api.html#text)
@@ -56,15 +56,13 @@ The [text](http://requirejs.org/docs/api.html#text) and
 
 ## Current Release
 
-[Version 0.0.1](https://github.com/jrburke/almond/tree/master/dist/almond-0.0.1.js)
+[Version 0.0.2](https://github.com/jrburke/almond/tree/master/dist/almond-0.0.2.js)
 
 ## Usage
 
-[Download this snapshot of the optimizer](https://raw.github.com/jrburke/r.js/master/dist/r-20110821.js)
-to get a version of the optimizer with wrap=true support
-(release 0.27.0 or later will have wrap=true support).
+[Download the RequireJS optimizer](http://requirejs.org/docs/download.html#rjs).
 
-Download the current release of almond.js: [0.0.1](https://github.com/jrburke/almond/tree/master/dist/almond-0.0.1.js).
+Download the current release of almond.js: [0.0.2](https://github.com/jrburke/almond/tree/master/dist/almond-0.0.2.js).
 
 Run the optimizer using [Node](http://nodejs.org) (also [works in Java](https://github.com/jrburke/r.js/blob/master/README.md)):
 
