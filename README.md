@@ -20,7 +20,6 @@ their project, but get a tiny download in one file after using the
 [RequireJS Optimizer](http://requirejs.org/docs/optimization.html).
 
 If you are building a library, the wrap=true support in the RequireJS optimizer
-(available after the 0.26.0 release, [dev snapshot here](https://raw.github.com/jrburke/r.js/master/dist/r-20110821.js))
 will wrap the optimized file in a closure, so the define/require AMD API does not
 escape the file. Users of your optimized file will only see the global API you decide
 to export, not the AMD API. See the usage section below for more details.
