@@ -1,5 +1,5 @@
 /**
- * almond 0.0.2 Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
+ * almond 0.0.2+ Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/almond for details
  */
