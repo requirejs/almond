@@ -249,5 +249,7 @@ var requirejs, require, define;
         main(name, deps, callback);
     };
 
-    define.amd = {};
+    define.amd = {
+        jQuery: true
+    };
 }());
