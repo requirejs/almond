@@ -82,6 +82,7 @@ var requirejs, require, define;
         };
     }
 
+    //>>excludeStart('excludeAlmondPlugins', pragmas.excludeAlmondPlugins)
     function makeNormalize(relName) {
         return function (name) {
             return normalize(name, relName);
@@ -93,6 +94,7 @@ var requirejs, require, define;
             defined[depName] = value;
         };
     }
+    //>>excludeEnd('excludeAlmondPlugins')
 
     /**
      * Makes a name map, normalizing the name, and using a plugin
@@ -103,6 +105,7 @@ var requirejs, require, define;
         var prefix, plugin,
             index = name.indexOf('!');
 
+        //>>excludeStart('excludeAlmondPlugins', pragmas.excludeAlmondPlugins)
         if (index !== -1) {
             prefix = normalize(name.slice(0, index), relName);
             name = name.slice(index + 1);
@@ -115,14 +118,19 @@ var requirejs, require, define;
                 name = normalize(name, relName);
             }
         } else {
+            //>>excludeEnd('excludeAlmondPlugins')
             name = normalize(name, relName);
+            //>>excludeStart('excludeAlmondPlugins', pragmas.excludeAlmondPlugins)
         }
+        //>>excludeEnd('excludeAlmondPlugins')
 
         //Using ridiculous property names for space reasons
         return {
+            //>>excludeStart('excludeAlmondPlugins', pragmas.excludeAlmondPlugins)
+            p: plugin,
+            //>>excludeEnd('excludeAlmondPlugins')
             f: prefix ? prefix + '!' + name : name, //fullName
-            n: name,
-            p: plugin
+            n: name
         };
     }
 
@@ -161,10 +169,13 @@ var requirejs, require, define;
                         };
                     } else if (depName in defined) {
                         args[i] = defined[depName];
-                    } else if (map.p) {
+                    }
+                    //>>excludeStart('excludeAlmondPlugins', pragmas.excludeAlmondPlugins)
+                    else if (map.p) {
                         map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
                         args[i] = defined[depName];
                     }
+                    //>>excludeEnd('excludeAlmondPlugins')
                 }
             }
 
