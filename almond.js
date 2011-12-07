@@ -10,8 +10,9 @@ var requirejs, require, define;
 (function () {
 
     var defined = {},
+        waiting = {},
         aps = [].slice,
-        req;
+        main, req;
 
     if (typeof define === "function") {
         //If a define is already in play via another AMD loader,
@@ -94,6 +95,15 @@ var requirejs, require, define;
         };
     }
 
+    function callDep(name) {
+        if (waiting.hasOwnProperty(name)) {
+            var args = waiting[name];
+            delete waiting[name];
+            main.apply(null, args);
+        }
+        return defined[name];
+    }
+
     /**
      * Makes a name map, normalizing the name, and using a plugin
      * for normalization if necessary. Grabs a ref to plugin
@@ -106,7 +116,7 @@ var requirejs, require, define;
         if (index !== -1) {
             prefix = normalize(name.slice(0, index), relName);
             name = name.slice(index + 1);
-            plugin = defined[prefix];
+            plugin = callDep(prefix);
 
             //Normalize according
             if (plugin && plugin.normalize) {
@@ -126,7 +136,7 @@ var requirejs, require, define;
         };
     }
 
-    function main(name, deps, callback, relName) {
+    main = function (name, deps, callback, relName) {
         var args = [],
             usingExports,
             cjsModule, depName, i, ret, map;
@@ -138,33 +148,38 @@ var requirejs, require, define;
 
         //Call the callback to define the module, if necessary.
         if (typeof callback === 'function') {
+
+            //Default to require, exports, module if no deps if
+            //the factory arg has any arguments specified.
+            if (!deps.length && callback.length) {
+                deps = ['require', 'exports', 'module'];
+            }
+
             //Pull out the defined dependencies and pass the ordered
             //values to the callback.
-            if (deps) {
-                for (i = 0; i < deps.length; i++) {
-                    map = makeMap(deps[i], relName);
-                    depName = map.f;
+            for (i = 0; i < deps.length; i++) {
+                map = makeMap(deps[i], relName);
+                depName = map.f;
 
-                    //Fast path CommonJS standard dependencies.
-                    if (depName === "require") {
-                        args[i] = makeRequire(name);
-                    } else if (depName === "exports") {
-                        //CommonJS module spec 1.1
-                        args[i] = defined[name] = {};
-                        usingExports = true;
-                    } else if (depName === "module") {
-                        //CommonJS module spec 1.1
-                        cjsModule = args[i] = {
-                            id: name,
-                            uri: '',
-                            exports: defined[name]
-                        };
-                    } else if (depName in defined) {
-                        args[i] = defined[depName];
-                    } else if (map.p) {
-                        map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
-                        args[i] = defined[depName];
-                    }
+                //Fast path CommonJS standard dependencies.
+                if (depName === "require") {
+                    args[i] = makeRequire(name);
+                } else if (depName === "exports") {
+                    //CommonJS module spec 1.1
+                    args[i] = defined[name] = {};
+                    usingExports = true;
+                } else if (depName === "module") {
+                    //CommonJS module spec 1.1
+                    cjsModule = args[i] = {
+                        id: name,
+                        uri: '',
+                        exports: defined[name]
+                    };
+                } else if (map.p) {
+                    map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
+                    args[i] = defined[depName];
+                } else {
+                    args[i] = callDep(depName);
                 }
             }
 
@@ -186,7 +201,7 @@ var requirejs, require, define;
             //worry about defining if have a module name.
             defined[name] = callback;
         }
-    }
+    };
 
     requirejs = req = function (deps, callback, relName, forceSync) {
         if (typeof deps === "string") {
@@ -195,7 +210,7 @@ var requirejs, require, define;
             //deps arg is the module name, and second arg (if passed)
             //is just the relName.
             //Normalize module name, if it contains . or ..
-            return defined[makeMap(deps, callback).f];
+            return callDep(makeMap(deps, callback).f);
         } else if (!deps.splice) {
             //deps is a config object, not an array.
             //Drop the config stuff on the ground.
@@ -241,12 +256,17 @@ var requirejs, require, define;
         //This module may not have dependencies
         if (!deps.splice) {
             //deps is not an array, so probably means
-            //an object literal for the value. Adjust args.
+            //an object literal or factory function for
+            //the value. Adjust args.
             callback = deps;
             deps = [];
         }
 
-        main(name, deps, callback);
+        if (define.unordered) {
+            waiting[name] = [name, deps, callback];
+        } else {
+            main(name, deps, callback);
+        }
     };
 
     define.amd = {

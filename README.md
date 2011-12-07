@@ -32,7 +32,8 @@ in a tiny wrapper that makes it easy for others to use your code even if they do
 It is best used for libraries or apps that use AMD and:
 
 * optimize all the modules into one file -- no dynamic code loading.
-* The modules **must** be optimized in order, so common dependencies, modules with no dependencies are first in the file. The RequireJS optimizer will do this for you.
+* The modules should be optimized in order, so common dependencies, modules with no dependencies are first in the file.
+  The RequireJS optimizer will do this for you. Unordered dependencies are supported, but [extra setup is needed](#unordered).
 * all modules have IDs and dependency arrays in their define() calls -- the RequireJS optimizer will take care of this for you.
 * do not use requirejs.ready(). If you use explicit dependencies for all modules, and you place
 the optimized file in a script tag before the ending body tag, then this should not be a problem.
@@ -81,6 +82,14 @@ If you do not want that wrapper, leave off the wrap=true argument.
 
 These optimizer arguments can also be used in a build config object, so it can be used
 in [runtime-generated server builds](https://github.com/jrburke/r.js/blob/master/build/tests/http/httpBuild.js).
+
+## Unordered modules <a name="unordered'></a>
+
+If your define() calls will not be listed in correct dependency order in the file,
+then set `define.unordered = true;` before any of your define() calls occur.
+
+Once `define.unordered` is set, the defined modules will not be evaluated until
+there is a top-level require() call.
 
 ## How to get help
 
