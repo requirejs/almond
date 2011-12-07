@@ -175,11 +175,11 @@ var requirejs, require, define;
                         uri: '',
                         exports: defined[name]
                     };
+                } else if (defined[depName] || waiting[depName]) {
+                    args[i] = callDep(depName);
                 } else if (map.p) {
                     map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
                     args[i] = defined[depName];
-                } else {
-                    args[i] = callDep(depName);
                 }
             }
 
