@@ -91,6 +91,8 @@ then set `define.unordered = true;` before any of your define() calls occur.
 Once `define.unordered` is set, the defined modules will not be evaluated until
 there is a top-level require() call.
 
+So to get the modules defined, be sure to have a require() call at the bottom of the file.
+
 ## How to get help
 
 * Contact the [requirejs list](https://groups.google.com/group/requirejs).

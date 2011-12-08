@@ -7,7 +7,7 @@
 /*global setTimeout: false */
 
 var requirejs, require, define;
-(function () {
+(function (undef) {
 
     var defined = {},
         waiting = {},
@@ -79,7 +79,7 @@ var requirejs, require, define;
             //A version of a require function that passes a moduleName
             //value for items that may need to
             //look up paths relative to the moduleName
-            return req.apply(null, aps.call(arguments, 0).concat([relName, forceSync]));
+            return req.apply(undef, aps.call(arguments, 0).concat([relName, forceSync]));
         };
     }
 
@@ -99,7 +99,7 @@ var requirejs, require, define;
         if (waiting.hasOwnProperty(name)) {
             var args = waiting[name];
             delete waiting[name];
-            main.apply(null, args);
+            main.apply(undef, args);
         }
         return defined[name];
     }
@@ -175,11 +175,13 @@ var requirejs, require, define;
                         uri: '',
                         exports: defined[name]
                     };
-                } else if (defined[depName] || waiting[depName]) {
+                } else if (defined.hasOwnProperty(depName) || waiting.hasOwnProperty(depName)) {
                     args[i] = callDep(depName);
                 } else if (map.p) {
                     map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
                     args[i] = defined[depName];
+                } else {
+                    throw name + ' missing ' + depName;
                 }
             }
 
@@ -189,7 +191,7 @@ var requirejs, require, define;
                 //If setting exports via "module" is in play,
                 //favor that over return value and exports. After that,
                 //favor a non-undefined return value over exports use.
-                if (cjsModule && cjsModule.exports !== undefined) {
+                if (cjsModule && cjsModule.exports !== undef) {
                     defined[name] = cjsModule.exports;
                 } else if (!usingExports) {
                     //Use the return value from the function.
@@ -226,10 +228,10 @@ var requirejs, require, define;
 
         //Simulate async callback;
         if (forceSync) {
-            main(null, deps, callback, relName);
+            main(undef, deps, callback, relName);
         } else {
             setTimeout(function () {
-                main(null, deps, callback, relName);
+                main(undef, deps, callback, relName);
             }, 15);
         }
 
