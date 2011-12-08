@@ -83,7 +83,7 @@ If you do not want that wrapper, leave off the wrap=true argument.
 These optimizer arguments can also be used in a build config object, so it can be used
 in [runtime-generated server builds](https://github.com/jrburke/r.js/blob/master/build/tests/http/httpBuild.js).
 
-## Unordered modules <a name="unordered'></a>
+## Unordered modules <a name="unordered"></a>
 
 If your define() calls will not be listed in correct dependency order in the file,
 then set `define.unordered = true;` before any of your define() calls occur.
