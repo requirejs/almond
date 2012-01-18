@@ -173,12 +173,16 @@
                 //so that subsequent addition of a real type="text/javascript"
                 //tag will cause the scripts to be executed immediately in the
                 //correct order.
-                cacheWaiting.push({
-                    name: name,
-                    req: req,
-                    onLoad: onLoad
-                });
-                require.attach(url, null, name, scriptCacheCallback, "script/cache");
+                if (req.specified(name)) {
+                    req([name], onLoad);
+                } else {
+                    cacheWaiting.push({
+                        name: name,
+                        req: req,
+                        onLoad: onLoad
+                    });
+                    require.attach(url, null, name, scriptCacheCallback, "script/cache");
+                }
             }
         }
     });
