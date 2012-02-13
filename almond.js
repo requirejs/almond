@@ -190,7 +190,8 @@ var requirejs, require, define;
             // pass the return value into any extensions
             if(extenders.hasOwnProperty(name)){
               for (i = 0; i < extenders[name].length; i++) {
-                ret = extenders[name][i](ret);
+                var extension = require.call(undef, extenders[name][i].name);
+                ret = extension(ret);
               }
             }
 
@@ -209,7 +210,8 @@ var requirejs, require, define;
             if(extenders.hasOwnProperty(name)){
 
               for (i = 0; i < extenders[name].length; i++) {
-                callback = extenders[name][i](callback);
+                var extension = require.call(undef, extenders[name][i].name);
+                callback = extension(callback);
               }
               
             }
@@ -267,9 +269,15 @@ var requirejs, require, define;
         require = req;
     }
 
-    extend = function(name, callback) {
+    extend = function(name) {
       extenders[name] = extenders[name] || [];
-      extenders[name].push(callback);
+      var extension = {
+          // give it a random name
+          name: new Date().getTime().toString(),
+          args: aps.call(arguments, 1)
+      };
+      define.apply(undef,[extension.name].concat(extension.args));
+      extenders[name].push(extension);
 
     };
 

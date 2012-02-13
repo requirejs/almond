@@ -1,13 +1,12 @@
-extend('foo', function(foo){
-
-  foo.name += " foo!";
-  return foo;
+define('awesome', function(){
+    return " foo!";
 });
 
-extend('bar', function(bar){
-
-  bar.name += " bar!";
-  return bar;
+extend('foo', ["awesome"], function(awesome){
+  return function(foo){
+    foo.name += awesome;
+    return foo;
+  };
 });
 
 define('foo', {
