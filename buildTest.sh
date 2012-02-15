@@ -11,4 +11,7 @@ cat tests/plugins/coffee.js >> tests/plugins/coffee-built.js
 cat almond.js > tests/plugins/text-built.js
 cat tests/plugins/text.js >> tests/plugins/text-built.js
 
+cat almond.js > tests/extend-built.js
+cat tests/extend.js >> tests/extend-built.js
+
 node ../r.js/r.js -o baseUrl=tests/plugins/order include=../../../almond,order\!one,order\!two out=tests/plugins/order/order-built.js optimize=none

@@ -2,15 +2,33 @@
 <html>
   <head>
     <title>almond: Extend Test</title>
-    <script type="text/javascript" src="../almond.js"></script>
-    <script type="text/javascript" src="simple-extension.js"></script>
+    <script type="text/javascript" src="doh/runner.js"></script>
+    <script type="text/javascript" src="doh/_browserRunner.js"></script>
+    <script type="text/javascript" src="extend-built.js"></script>
     <script type="text/javascript">
 
-      require(['foo', 'bar', 'baz'], function(foo, bar, baz) {
-          baz.callIt(function (bar) {
-            console.log(foo.name, bar.name, baz.name, baz.barName);
-          });
-      });
+	var master = new doh.Deferred();
+
+        require(['foo', 'bar', 'baz'], function(foo, bar, baz) {
+            doh.register('extend',
+                [{
+                    name: 'extend',
+                    timeout: 2000,
+                    runTest: function() {
+                        doh.is('foo foo!', foo.name);
+                        doh.is('bar', bar.name);
+                        doh.is('baz', baz.name);
+                        doh.is('bar', baz.barName);
+                        baz.callIt(function (bar) {
+                            doh.is('bar', bar.name);
+                            master.callback(true);
+                        });
+                    }
+                }]
+            );
+            doh.run();
+
+        });
 
         </script>
       </head>
