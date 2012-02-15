@@ -11,6 +11,7 @@ var requirejs, require, define;
 
     var defined = {},
         waiting = {},
+        extenders = {},
         aps = [].slice,
         main, req;
 
@@ -186,6 +187,13 @@ var requirejs, require, define;
             }
 
             ret = callback.apply(defined[name], args);
+            // pass the return value into any extensions
+            if(extenders.hasOwnProperty(name)){
+              for (i = 0; i < extenders[name].length; i++) {
+                var extension = require.call(undef, extenders[name][i].name);
+                ret = extension(ret);
+              }
+            }
 
             if (name) {
                 //If setting exports via "module" is in play,
@@ -199,6 +207,14 @@ var requirejs, require, define;
                 }
             }
         } else if (name) {
+            if(extenders.hasOwnProperty(name)){
+
+              for (i = 0; i < extenders[name].length; i++) {
+                var extension = require.call(undef, extenders[name][i].name);
+                callback = extension(callback);
+              }
+              
+            }
             //May just be an object definition for the module. Only
             //worry about defining if have a module name.
             defined[name] = callback;
@@ -252,6 +268,18 @@ var requirejs, require, define;
     if (!require) {
         require = req;
     }
+
+    extend = function(name) {
+      extenders[name] = extenders[name] || [];
+      var extension = {
+          // give it a random name
+          name: new Date().getTime().toString(),
+          args: aps.call(arguments, 1)
+      };
+      define.apply(undef,[extension.name].concat(extension.args));
+      extenders[name].push(extension);
+
+    };
 
     define = function (name, deps, callback) {
 
