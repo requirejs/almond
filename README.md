@@ -41,7 +41,7 @@ the optimized file in a script tag before the ending body tag, then this should 
 the module listing order in the optimizer build profile.
 * do not use [RequireJS multiversion support/contexts](http://requirejs.org/docs/api.html#multiversion).
 * do not use require.toUrl() or require.nameToUrl().
-* do not use [packages/packagePaths config](http://requirejs.org/docs/api.html#packages).
+* do not use [packages/packagePaths config](http://requirejs.org/docs/api.html#packages). If you need to use packages that have a main property, [volo](https://github.com/volojs/volo) can create an adapter module so that it can work without this config. Use the `amdify add` command to add the dependency to your project.
 
 What is supported:
 
@@ -70,7 +70,7 @@ Run the optimizer using [Node](http://nodejs.org) (also [works in Java](https://
     node r.js -o baseUrl=. name=path/to/almond.js include=main out=main-built.js wrap=true
 
 This assumes your project's top-level script file is called main.js and the command
-above is run from the directory containing main.js.
+above is run from the directory containing main.js. If you prefer to use a build.js build profile instead of command line arguments, [this RequireJS optimization section](http://requirejs.org/docs/optimization.html#pitfalls) has info on how to do that.
 
 wrap=true will add this wrapper around the main-built.js contents (which will be minified by UglifyJS:
 
