@@ -1,5 +1,5 @@
 /**
- * almond 0.0.3 Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
+ * almond 0.1.0zdev Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/almond for details
  */
@@ -223,7 +223,6 @@ var requirejs, require, define;
 
     requirejs = req = function (deps, callback, relName, forceSync) {
         if (typeof deps === "string") {
-
             //Just return the module wanted. In this scenario, the
             //deps arg is the module name, and second arg (if passed)
             //is just the relName.
@@ -231,7 +230,7 @@ var requirejs, require, define;
             return callDep(makeMap(deps, callback).f);
         } else if (!deps.splice) {
             //deps is a config object, not an array.
-            //Drop the config stuff on the ground.
+            config = deps;
             if (callback.splice) {
                 //callback is an array, which means it is a dependency list.
                 //Adjust args if there are dependencies

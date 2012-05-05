@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>almond: Shim Test</title>
+    <script type="text/javascript" src="../doh/runner.js"></script>
+    <script type="text/javascript" src="../doh/_browserRunner.js"></script>
+    <script type="text/javascript" src="shim-built.js"></script>
+    <script type="text/javascript">
+	var master = new doh.Deferred();
+
+        require({
+                baseUrl: './',
+                shim: {
+                    a: {
+                        exports: function () {
+                            return this.A.name;
+                        }
+                    },
+                    'b': ['a', 'd'],
+                    'c': {
+                        deps: ['a', 'b'],
+                        exports: 'C'
+                    }
+                }
+            },
+            ['a', 'c'],
+            function(a, c) {
+                doh.register(
+                    'shimBasic',
+                    [
+                        function shimBasic(t){
+                            t.is('a', a);
+                            t.is('a', c.b.aValue);
+                            t.is('b', c.b.name);
+                            t.is('c', c.name);
+                            t.is('d', c.b.dValue.name);
+                        }
+                    ]
+                );
+                doh.run();
+            }
+        );
+
+    </script>
+</head>
+<body>
+    <h1>almond: moduleConfig Test</h1>
+    <p>Check console for messages</p>
+</body>
+</html>

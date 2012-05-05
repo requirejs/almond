@@ -4,4 +4,5 @@ tests/moduleConfig/moduleConfig-built.js
 tests/plugins/plugins-built.js
 tests/plugins/coffee-built.js
 tests/plugins/text-built.js
+tests/shim/shim-built.js
 tests/plugins/order/order-built.js
