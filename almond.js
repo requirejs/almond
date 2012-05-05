@@ -196,7 +196,7 @@ var requirejs, require, define;
                     map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
                     args[i] = defined[depName];
                 } else {
-                    throw name + ' missing ' + depName;
+                    throw new Error(name + ' missing ' + depName);
                 }
             });
 
