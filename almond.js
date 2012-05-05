@@ -3,16 +3,29 @@
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/almond for details
  */
-/*jslint strict: false, plusplus: false */
+//Going sloppy to avoid 'use strict' string cost, but strict practices should
+//be followed.
+/*jslint sloppy: true */
 /*global setTimeout: false */
 
 var requirejs, require, define;
 (function (undef) {
-
     var defined = {},
         waiting = {},
+        config = {},
         aps = [].slice,
         main, req;
+
+    function each(ary, func) {
+        if (ary) {
+            var i;
+            for (i = 0; i < ary.length; i += 1) {
+                if (func(ary[i], i, ary)) {
+                    break;
+                }
+            }
+        }
+    }
 
     if (typeof define === "function") {
         //If a define is already in play via another AMD loader,
@@ -46,8 +59,7 @@ var requirejs, require, define;
                 name = baseName.concat(name.split("/"));
 
                 //start trimDots
-                var i, part;
-                for (i = 0; (part = name[i]); i++) {
+                each(name, function (part, i) {
                     if (part === ".") {
                         name.splice(i, 1);
                         i -= 1;
@@ -59,13 +71,13 @@ var requirejs, require, define;
                             //no path mapping for a path starting with '..'.
                             //This can still fail, but catches the most reasonable
                             //uses of ..
-                            break;
+                            return true;
                         } else if (i > 0) {
                             name.splice(i - 1, 2);
                             i -= 2;
                         }
                     }
-                }
+                });
                 //end trimDots
 
                 name = name.join("/");
@@ -139,7 +151,7 @@ var requirejs, require, define;
     main = function (name, deps, callback, relName) {
         var args = [],
             usingExports,
-            cjsModule, depName, i, ret, map;
+            cjsModule, depName, ret, map;
 
         //Use name if no relName
         if (!relName) {
@@ -157,8 +169,8 @@ var requirejs, require, define;
 
             //Pull out the defined dependencies and pass the ordered
             //values to the callback.
-            for (i = 0; i < deps.length; i++) {
-                map = makeMap(deps[i], relName);
+            each(deps, function (dep, i) {
+                map = makeMap(dep, relName);
                 depName = map.f;
 
                 //Fast path CommonJS standard dependencies.
@@ -173,7 +185,10 @@ var requirejs, require, define;
                     cjsModule = args[i] = {
                         id: name,
                         uri: '',
-                        exports: defined[name]
+                        exports: defined[name],
+                        config: function () {
+                            return (config && config.config && config.config[name]) || {};
+                        }
                     };
                 } else if (defined.hasOwnProperty(depName) || waiting.hasOwnProperty(depName)) {
                     args[i] = callDep(depName);
@@ -183,7 +198,7 @@ var requirejs, require, define;
                 } else {
                     throw name + ' missing ' + depName;
                 }
-            }
+            });
 
             ret = callback.apply(defined[name], args);
 
@@ -191,9 +206,10 @@ var requirejs, require, define;
                 //If setting exports via "module" is in play,
                 //favor that over return value and exports. After that,
                 //favor a non-undefined return value over exports use.
-                if (cjsModule && cjsModule.exports !== undef) {
+                if (cjsModule && cjsModule.exports !== undef &&
+                    cjsModule.exports !== defined[name]) {
                     defined[name] = cjsModule.exports;
-                } else if (!usingExports) {
+                } else if (ret !== undef) {
                     //Use the return value from the function.
                     defined[name] = ret;
                 }
@@ -220,7 +236,7 @@ var requirejs, require, define;
                 //callback is an array, which means it is a dependency list.
                 //Adjust args if there are dependencies
                 deps = callback;
-                callback = arguments[2];
+                callback = relName;
             } else {
                 deps = [];
             }
@@ -242,7 +258,8 @@ var requirejs, require, define;
      * Just drops the config on the floor, but returns req in case
      * the config return value is used.
      */
-    req.config = function () {
+    req.config = function (cfg) {
+        config = cfg;
         return req;
     };
 
@@ -264,11 +281,7 @@ var requirejs, require, define;
             deps = [];
         }
 
-        if (define.unordered) {
-            waiting[name] = [name, deps, callback];
-        } else {
-            main(name, deps, callback);
-        }
+        waiting[name] = [name, deps, callback];
     };
 
     define.amd = {
