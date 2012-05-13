@@ -5,6 +5,12 @@ cat tests/simple.js >> tests/simple-built.js
 cat almond.js > tests/moduleConfig/moduleConfig-built.js
 cat tests/moduleConfig/moduleConfig.js >> tests/moduleConfig/moduleConfig-built.js
 
+cat almond.js > tests/mapConfig/mapConfig-built.js
+cat tests/mapConfig/mapConfig.js >> tests/mapConfig/mapConfig-built.js
+
+cat almond.js > tests/mapConfig/mapConfigStar-built.js
+cat tests/mapConfig/mapConfigStar.js >> tests/mapConfig/mapConfigStar-built.js
+
 cat almond.js > tests/plugins/plugins-built.js
 cat tests/plugins/plugins.js >> tests/plugins/plugins-built.js
 
