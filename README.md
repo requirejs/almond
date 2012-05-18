@@ -32,8 +32,6 @@ in a tiny wrapper that makes it easy for others to use your code even if they do
 It is best used for libraries or apps that use AMD and:
 
 * optimize all the modules into one file -- no dynamic code loading.
-* The modules should be optimized in order, so common dependencies, modules with no dependencies are first in the file.
-  The RequireJS optimizer will do this for you. Unordered dependencies are supported, but [extra setup is needed](#unordered).
 * all modules have IDs and dependency arrays in their define() calls -- the RequireJS optimizer will take care of this for you.
 * do not use requirejs.ready(). If you use explicit dependencies for all modules, and you place
 the optimized file in a script tag before the ending body tag, then this should not be a problem.
@@ -56,14 +54,14 @@ The [text](http://requirejs.org/docs/api.html#text) and
 
 ## Current Release
 
-[Version 0.0.3](https://github.com/jrburke/almond/raw/0.0.3/almond.js)
+[Version 0.1.0](https://github.com/jrburke/almond/raw/0.1.0/almond.js)
 
 
 ## Usage
 
 [Download the RequireJS optimizer](http://requirejs.org/docs/download.html#rjs).
 
-Download the current release of almond.js: [0.0.3](https://github.com/jrburke/almond/raw/0.0.3/almond.js).
+Download the current release of almond.js: [0.1.0](https://github.com/jrburke/almond/raw/0.1.0/almond.js).
 
 Run the optimizer using [Node](http://nodejs.org) (also [works in Java](https://github.com/jrburke/r.js/blob/master/README.md)):
 
@@ -84,15 +82,37 @@ If you do not want that wrapper, leave off the wrap=true argument.
 These optimizer arguments can also be used in a build config object, so it can be used
 in [runtime-generated server builds](https://github.com/jrburke/r.js/blob/master/build/tests/http/httpBuild.js).
 
-## Unordered modules <a name="unordered"></a>
+## Triggering module execution <a name="execution"></a>
 
-If your define() calls will not be listed in correct dependency order in the file,
-then set `define.unordered = true;` before any of your define() calls occur.
+As of RequireJS 2.0 and almond 0.1, modules are only executed if they are
+called by a top level require call. The data-main attribute on a script tag
+for require.js counts as a top level require call.
 
-Once `define.unordered` is set, the defined modules will not be evaluated until
-there is a top-level require() call.
+However with almond, it does not look for a data-main attribute, and if your
+main JS module does not use a top level require() or requirejs() call to
+trigger module loading/execution, after a build, it may appear that the code
+broke -- no modules execute.
 
-So to get the modules defined, be sure to have a require() call at the bottom of the file.
+The 2.0 RequireJS optimizer has a build config, option **endRequire** that you
+can use to specify that a require([]) call is inserted at the end of the built
+file to trigger module loading. Example:
+
+    node r.js -o baseUrl=. name=path/to/almond.js include=main endRequire=main out=main-built.js wrap=true
+
+or, if using a build config file:
+
+```javascript
+{
+    baseUrl: '.',
+    name: 'path/to/almond.js',
+    include: ['main'],
+    endRequire: ['main'],
+    out: 'main-built.js',
+    wrap: true
+}
+```
+
+This will result with `require(["main"]);` at the bottom of main-built.js.
 
 ## How to get help
 
