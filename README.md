@@ -93,11 +93,11 @@ main JS module does not use a top level require() or requirejs() call to
 trigger module loading/execution, after a build, it may appear that the code
 broke -- no modules execute.
 
-The 2.0 RequireJS optimizer has a build config, option **endRequire** that you
+The 2.0 RequireJS optimizer has a build config, option **insertRequire** that you
 can use to specify that a require([]) call is inserted at the end of the built
 file to trigger module loading. Example:
 
-    node r.js -o baseUrl=. name=path/to/almond.js include=main endRequire=main out=main-built.js wrap=true
+    node r.js -o baseUrl=. name=path/to/almond.js include=main insertRequire=main out=main-built.js wrap=true
 
 or, if using a build config file:
 
@@ -106,7 +106,7 @@ or, if using a build config file:
     baseUrl: '.',
     name: 'path/to/almond.js',
     include: ['main'],
-    endRequire: ['main'],
+    insertRequire: ['main'],
     out: 'main-built.js',
     wrap: true
 }
