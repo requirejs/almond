@@ -9,3 +9,4 @@ doh.registerUrl("text", "../plugins/text.html");
 doh.registerUrl("coffee", "../plugins/coffee.html");
 doh.registerUrl("shim", "../shim/shim.html");
 doh.registerUrl("unorderedSeparate", "../unordered/separate.html");
+doh.registerUrl("emptyFactory", "../emptyFactory/emptyFactory.html");

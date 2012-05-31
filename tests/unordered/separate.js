@@ -1,13 +1,22 @@
-define.unordered = true;
 
 define("bread", function(require, exports, module) {
     exports.name = 'bread';
     exports.ingredient = require('yeast').name;
 });
 
+//Test undefined exports.
+define("water", function () {});
+
+define("bin", function(require, exports, module) {
+    exports.name = "bin";
+    exports.water = require("water");
+});
+
 define("yeast", function(require,exports,module){
     module.exports = {
-        name: 'yeast'
+        name: 'yeast',
+        water: require("water"),
+        bin: require("bin")
     };
 });
 
