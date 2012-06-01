@@ -13,6 +13,7 @@ var requirejs, require, define;
     var defined = {},
         waiting = {},
         config = {},
+        defining = {},
         aps = [].slice,
         main, req;
 
@@ -146,6 +147,7 @@ var requirejs, require, define;
         if (waiting.hasOwnProperty(name)) {
             var args = waiting[name];
             delete waiting[name];
+            defining[name] = true;
             main.apply(undef, args);
         }
 
@@ -227,7 +229,7 @@ var requirejs, require, define;
                 } else if (map.p) {
                     map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
                     args[i] = defined[depName];
-                } else {
+                } else if (!defining[depName]) {
                     throw new Error(name + ' missing ' + depName);
                 }
             });
