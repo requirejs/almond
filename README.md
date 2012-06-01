@@ -11,7 +11,7 @@ they do not want to include a full AMD loader like RequireJS, since they do not 
 Some use cases, like mobile, are very sensitive to file sizes.
 
 By including almond in the built file, there is no need for RequireJS.
-almond is **991 bytes** when minified with Closure Compiler and gzipped.
+almond is **1 kilobyte** when minified with Closure Compiler and gzipped.
 
 Since it can support certain types of loader plugin-optimized resources, it is a great
 fit for a library that wants to use [text templates](http://requirejs.org/docs/api.html#text)
@@ -52,9 +52,9 @@ The [text](http://requirejs.org/docs/api.html#text) and
 [CoffeeScript](https://github.com/jrburke/require-cs) plugins are two such plugins.
 
 
-## Current Release
+## Download
 
-[Version 0.1.0](https://github.com/jrburke/almond/raw/0.1.0/almond.js)
+[Latest release](https://github.com/jrburke/almond/raw/latest/almond.js)
 
 
 ## Usage
@@ -113,6 +113,47 @@ or, if using a build config file:
 ```
 
 This will result with `require(["main"]);` at the bottom of main-built.js.
+
+## Common errors
+
+Explanations of common errors:
+
+### deps is undefined
+
+Where this line is mentioned:
+
+    if (!deps.splice) {
+
+It usually means that there is a define()'d module, but it is missing a name,
+something that looks like this:
+
+    define(function () {});
+
+when it should look like:
+
+    define('someName', function () {});
+
+This is usually a sign that the tool you used to combine all the modules
+together did not properly name an anonymous AMD module.
+
+### x missing y
+
+It means that module 'x' asked for module 'y', but module 'y' was not available.
+
+This usually means that 'y' was not included in the built file that includes almond.
+
+almond can only handle modules built in with it, it cannot dynamically load
+modules from the network.
+
+
+### No y
+
+It means that a `require('y')` call was done but y was not available.
+
+This usually means that 'y' was not included in the built file that includes almond.
+
+almond can only handle modules built in with it, it cannot dynamically load
+modules from the network.
 
 ## How to get help
 
