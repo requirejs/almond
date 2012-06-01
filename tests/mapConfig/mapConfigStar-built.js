@@ -148,6 +148,10 @@ var requirejs, require, define;
             delete waiting[name];
             main.apply(undef, args);
         }
+
+        if (!defined.hasOwnProperty(name)) {
+            throw new Error('No ' + name);
+        }
         return defined[name];
     }
 
@@ -189,22 +193,15 @@ var requirejs, require, define;
             cjsModule, depName, ret, map;
 
         //Use name if no relName
-        if (!relName) {
-            relName = name;
-        }
+        relName = relName || name;
 
         //Call the callback to define the module, if necessary.
         if (typeof callback === 'function') {
 
-            //Default to require, exports, module if no deps if
-            //the factory arg has any arguments specified.
-            if (!deps.length && callback.length) {
-                deps = ['require', 'exports', 'module'];
-            }
-
             //Pull out the defined dependencies and pass the ordered
             //values to the callback.
-            each(deps, function (dep, i) {
+            //Default to [require, exports, module] if no deps
+            each(!deps.length && callback.length ? ['require', 'exports', 'module'] : deps, function (dep, i) {
                 map = makeMap(dep, relName);
                 depName = map.f;
 
@@ -273,7 +270,7 @@ var requirejs, require, define;
                 callback = relName;
                 relName = null;
             } else {
-                deps = [];
+                deps = undef;
             }
         }
 
