@@ -11,3 +11,4 @@ doh.registerUrl("shim", "../shim/shim.html");
 doh.registerUrl("unorderedSeparate", "../unordered/separate.html");
 doh.registerUrl("emptyFactory", "../emptyFactory/emptyFactory.html");
 doh.registerUrl("missing", "../missing/missing.html");
+doh.registerUrl("insertRequire", "../insertRequire/insertRequire.html", 4000);

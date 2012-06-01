@@ -274,6 +274,9 @@ var requirejs, require, define;
             }
         }
 
+        //Support require(['a'])
+        callback = callback || function () {};
+
         //Simulate async callback;
         if (forceSync) {
             main(undef, deps, callback, relName);
