@@ -13,3 +13,4 @@ doh.registerUrl("emptyFactory", "../emptyFactory/emptyFactory.html");
 doh.registerUrl("missing", "../missing/missing.html");
 doh.registerUrl("insertRequire", "../insertRequire/insertRequire.html", 4000);
 doh.registerUrl("circular", "../circular/circular.html");
+doh.registerUrl("relativePaths", "../relativePaths/relativePaths.html");

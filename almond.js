@@ -17,17 +17,6 @@ var requirejs, require, define;
         aps = [].slice,
         main, req;
 
-    function each(ary, func) {
-        if (ary) {
-            var i;
-            for (i = 0; i < ary.length; i += 1) {
-                if (func(ary[i], i, ary)) {
-                    break;
-                }
-            }
-        }
-    }
-
     /**
      * Given a relative module name, like ./something, normalize it to
      * a real name that can be mapped to a path.
@@ -40,7 +29,7 @@ var requirejs, require, define;
         var baseParts = baseName && baseName.split("/"),
             map = config.map,
             starMap = (map && map['*']) || {},
-            nameParts, nameSegment, mapValue, foundMap, i, j;
+            nameParts, nameSegment, mapValue, foundMap, i, j, part;
 
         //Adjust any relative paths.
         if (name && name.charAt(0) === ".") {
@@ -58,7 +47,7 @@ var requirejs, require, define;
                 name = baseParts.concat(name.split("/"));
 
                 //start trimDots
-                each(name, function (part, i) {
+                for (i = 0; (part = name[i]); i++) {
                     if (part === ".") {
                         name.splice(i, 1);
                         i -= 1;
@@ -76,7 +65,7 @@ var requirejs, require, define;
                             i -= 2;
                         }
                     }
-                });
+                }
                 //end trimDots
 
                 name = name.join("/");
@@ -189,10 +178,16 @@ var requirejs, require, define;
         };
     }
 
+    function makeConfig(name) {
+        return function () {
+            return (config && config.config && config.config[name]) || {};
+        };
+    }
+
     main = function (name, deps, callback, relName) {
         var args = [],
             usingExports,
-            cjsModule, depName, ret, map;
+            cjsModule, depName, ret, map, i;
 
         //Use name if no relName
         relName = relName || name;
@@ -203,8 +198,9 @@ var requirejs, require, define;
             //Pull out the defined dependencies and pass the ordered
             //values to the callback.
             //Default to [require, exports, module] if no deps
-            each(!deps.length && callback.length ? ['require', 'exports', 'module'] : deps, function (dep, i) {
-                map = makeMap(dep, relName);
+            deps = !deps.length && callback.length ? ['require', 'exports', 'module'] : deps;
+            for (i = 0; i < deps.length; i++) {
+                map = makeMap(deps[i], relName);
                 depName = map.f;
 
                 //Fast path CommonJS standard dependencies.
@@ -220,9 +216,7 @@ var requirejs, require, define;
                         id: name,
                         uri: '',
                         exports: defined[name],
-                        config: function () {
-                            return (config && config.config && config.config[name]) || {};
-                        }
+                        config: makeConfig(name)
                     };
                 } else if (defined.hasOwnProperty(depName) || waiting.hasOwnProperty(depName)) {
                     args[i] = callDep(depName);
@@ -232,7 +226,7 @@ var requirejs, require, define;
                 } else if (!defining[depName]) {
                     throw new Error(name + ' missing ' + depName);
                 }
-            });
+            }
 
             ret = callback.apply(defined[name], args);
 
