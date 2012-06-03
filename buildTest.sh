@@ -11,6 +11,9 @@ cat tests/mapConfig/mapConfig.js >> tests/mapConfig/mapConfig-built.js
 cat almond.js > tests/mapConfig/mapConfigStar-built.js
 cat tests/mapConfig/mapConfigStar.js >> tests/mapConfig/mapConfigStar-built.js
 
+cat almond.js > tests/mapConfig/mapConfigStarAdapter-built.js
+cat tests/mapConfig/mapConfigStarAdapter.js >> tests/mapConfig/mapConfigStarAdapter-built.js
+
 cat almond.js > tests/plugins/plugins-built.js
 cat tests/plugins/plugins.js >> tests/plugins/plugins-built.js
 
