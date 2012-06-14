@@ -65,7 +65,7 @@ The [text](http://requirejs.org/docs/api.html#text) and
 
 Run the optimizer using [Node](http://nodejs.org) (also [works in Java](https://github.com/jrburke/r.js/blob/master/README.md)):
 
-    node r.js -o baseUrl=. name=path/to/almond.js include=main out=main-built.js wrap=true
+    node r.js -o baseUrl=. name=path/to/almond include=main out=main-built.js wrap=true
 
 This assumes your project's top-level script file is called main.js and the command
 above is run from the directory containing main.js. If you prefer to use a build.js build profile instead of command line arguments, [this RequireJS optimization section](http://requirejs.org/docs/optimization.html#pitfalls) has info on how to do that.
@@ -104,7 +104,7 @@ or, if using a build config file:
 ```javascript
 {
     baseUrl: '.',
-    name: 'path/to/almond.js',
+    name: 'path/to/almond',
     include: ['main'],
     insertRequire: ['main'],
     out: 'main-built.js',
