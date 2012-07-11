@@ -17,6 +17,11 @@ var requirejs, require, define;
         aps = [].slice,
         main, req;
 
+    // If there's an existing AMD loader - we're superflous.
+    if (typeof define !== 'undefined') {
+        return;
+    }
+
     /**
      * Given a relative module name, like ./something, normalize it to
      * a real name that can be mapped to a path.
@@ -286,6 +291,15 @@ var requirejs, require, define;
     };
 
     /**
+     * Removes the definition of a module
+     */
+    req.undef = function(name) {
+        delete waiting[name];
+        delete defined[name];
+        delete defining[name];
+    };
+
+    /**
      * Just drops the config on the floor, but returns req in case
      * the config return value is used.
      */
@@ -305,7 +319,10 @@ var requirejs, require, define;
             deps = [];
         }
 
-        waiting[name] = [name, deps, callback];
+        // Don't override existing modules - i.e. behave just as RequireJS.
+        if(!waiting[name] && !defined[name]) {
+            waiting[name] = [name, deps, callback];
+        }
     };
 
     define.amd = {
