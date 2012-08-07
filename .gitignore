@@ -1,6 +1,10 @@
 .DS_Store
 tests/simple-built.js
 tests/moduleConfig/moduleConfig-built.js
+tests/mapConfig/mapConfig-built.js
+tests/mapConfig/mapConfigStar-built.js
+tests/mapConfig/mapConfigStarAdapter-built.js
+tests/mapConfig/mapConfigSpecificity-built.js
 tests/plugins/plugins-built.js
 tests/plugins/coffee-built.js
 tests/plugins/text-built.js
