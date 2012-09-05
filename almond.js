@@ -61,7 +61,7 @@ var requirejs, require, define;
                             //no path mapping for a path starting with '..'.
                             //This can still fail, but catches the most reasonable
                             //uses of ..
-                            return true;
+                            break;
                         } else if (i > 0) {
                             name.splice(i - 1, 2);
                             i -= 2;

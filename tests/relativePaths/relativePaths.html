@@ -26,10 +26,17 @@
             };
         });
 
-        define('main', ['./foo/b'], function(v){
+        define('../../ext',[], function(){
+            return {
+                name: 'ext'
+            };
+        });
+
+        define('main', ['./foo/b', '../../ext'], function(v, e){
             return {
                 name: 'main',
-                fooB: v
+                fooB: v,
+                ext: e
             };
         });
 
@@ -42,6 +49,7 @@
                         t.is('foo/b', main.fooB.name);
                         t.is('foo/bar/c', main.fooB.barC.name);
                         t.is('fu/a', main.fooB.barC.fuA.name);
+                        t.is('ext', main.ext.name);
                     }
                 ]
             );
