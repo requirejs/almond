@@ -17,5 +17,8 @@
     "main": "almond.js",
     "engines": {
         "node": ">=0.4.0"
+    },
+    "devDependencies": {
+        "connect": "*"
     }
 }
