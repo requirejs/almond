@@ -1,5 +1,5 @@
 /**
- * almond 0.1.4 Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
+ * almond dev0.2 Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/almond for details
  */
@@ -10,11 +10,12 @@
 
 var requirejs, require, define;
 (function (undef) {
-    var main, req,
+    var main, req, makeMap,
         defined = {},
         waiting = {},
         config = {},
         defining = {},
+        special = {require: 1, exports: 1, module: 1},
         aps = [].slice;
 
     /**
@@ -163,21 +164,41 @@ var requirejs, require, define;
         return defined[name];
     }
 
+    //Turns a plugin!resource to [plugin, resource]
+    //with the plugin being undefined if the name
+    //did not have a plugin prefix.
+    function splitPrefix(name, relName) {
+        var prefix,
+            index = name ? name.indexOf('!') : -1;
+        if (index > -1) {
+            prefix = name.substring(0, index);
+            name = name.substring(index + 1, name.length);
+        } else if (relName && !special[name]) {
+            //This is dependency mentioned by a plugin that
+            //has a default prefix.
+            prefix = makeMap(relName).pr;
+        }
+        return [prefix, name];
+    }
+
     /**
      * Makes a name map, normalizing the name, and using a plugin
      * for normalization if necessary. Grabs a ref to plugin
      * too, as an optimization.
      */
-    function makeMap(name, relName) {
-        var prefix, plugin,
-            index = name.indexOf('!');
+    makeMap = function (name, relName) {
+        var plugin,
+            parts = splitPrefix(name, relName),
+            prefix = parts[0];
 
-        if (index !== -1) {
-            prefix = normalize(name.slice(0, index), relName);
-            name = name.slice(index + 1);
+        name = parts[1];
+
+        if (prefix) {
             plugin = callDep(prefix);
+        }
 
-            //Normalize according
+        //Normalize according
+        if (prefix) {
             if (plugin && plugin.normalize) {
                 name = plugin.normalize(name, makeNormalize(relName));
             } else {
@@ -185,15 +206,22 @@ var requirejs, require, define;
             }
         } else {
             name = normalize(name, relName);
+            parts = splitPrefix(name);
+            prefix = parts[0];
+            name = parts[1];
+            if (prefix) {
+                plugin = callDep(prefix);
+            }
         }
 
         //Using ridiculous property names for space reasons
         return {
             f: prefix ? prefix + '!' + name : name, //fullName
             n: name,
+            pr: prefix,
             p: plugin
         };
-    }
+    };
 
     function makeConfig(name) {
         return function () {
