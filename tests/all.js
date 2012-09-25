@@ -6,7 +6,6 @@ doh.registerUrl("mapConfigStar", "../mapConfig/mapConfigStar.html");
 doh.registerUrl("mapConfigStarAdapter", "../mapConfig/mapConfigStarAdapter.html");
 doh.registerUrl("mapConfigSpecificity", "../mapConfig/mapConfigSpecificity.html");
 doh.registerUrl("plugins", "../plugins/plugins.html");
-doh.registerUrl("pluginsDefaultPrefix", "../plugins/defaultPrefix/defaultPrefix.html");
 doh.registerUrl("orderPlugin", "../plugins/order/order.html");
 doh.registerUrl("text", "../plugins/text.html");
 doh.registerUrl("coffee", "../plugins/coffee.html");

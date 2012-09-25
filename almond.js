@@ -15,7 +15,6 @@ var requirejs, require, define;
         waiting = {},
         config = {},
         defining = {},
-        special = {require: 1, exports: 1, module: 1},
         aps = [].slice;
 
     /**
@@ -167,16 +166,12 @@ var requirejs, require, define;
     //Turns a plugin!resource to [plugin, resource]
     //with the plugin being undefined if the name
     //did not have a plugin prefix.
-    function splitPrefix(name, relName) {
+    function splitPrefix(name) {
         var prefix,
             index = name ? name.indexOf('!') : -1;
         if (index > -1) {
             prefix = name.substring(0, index);
             name = name.substring(index + 1, name.length);
-        } else if (relName && !special[name]) {
-            //This is dependency mentioned by a plugin that
-            //has a default prefix.
-            prefix = makeMap(relName).pr;
         }
         return [prefix, name];
     }
@@ -188,7 +183,7 @@ var requirejs, require, define;
      */
     makeMap = function (name, relName) {
         var plugin,
-            parts = splitPrefix(name, relName),
+            parts = splitPrefix(name),
             prefix = parts[0];
 
         name = parts[1];
