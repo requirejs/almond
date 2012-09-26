@@ -189,6 +189,7 @@ var requirejs, require, define;
         name = parts[1];
 
         if (prefix) {
+            prefix = normalize(prefix, relName);
             plugin = callDep(prefix);
         }
 
