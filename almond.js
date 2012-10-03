@@ -10,7 +10,7 @@
 
 var requirejs, require, define;
 (function (undef) {
-    var main, req, makeMap,
+    var main, req, makeMap, handlers,
         defined = {},
         waiting = {},
         config = {},
@@ -225,6 +225,28 @@ var requirejs, require, define;
         };
     }
 
+    handlers = {
+        require: function (name) {
+            return makeRequire(name);
+        },
+        exports: function (name) {
+            var e = defined[name];
+            if (typeof e !== 'undefined') {
+                return e;
+            } else {
+                return (defined[name] = {});
+            }
+        },
+        module: function (name) {
+            return {
+                id: name,
+                uri: '',
+                exports: defined[name],
+                config: makeConfig(name)
+            };
+        }
+    };
+
     main = function (name, deps, callback, relName) {
         var cjsModule, depName, ret, map, i,
             args = [],
@@ -246,19 +268,14 @@ var requirejs, require, define;
 
                 //Fast path CommonJS standard dependencies.
                 if (depName === "require") {
-                    args[i] = makeRequire(name);
+                    args[i] = handlers.require(name);
                 } else if (depName === "exports") {
                     //CommonJS module spec 1.1
-                    args[i] = defined[name] = {};
+                    args[i] = handlers.exports(name);
                     usingExports = true;
                 } else if (depName === "module") {
                     //CommonJS module spec 1.1
-                    cjsModule = args[i] = {
-                        id: name,
-                        uri: '',
-                        exports: defined[name],
-                        config: makeConfig(name)
-                    };
+                    cjsModule = args[i] = handlers.module(name);
                 } else if (defined.hasOwnProperty(depName) || waiting.hasOwnProperty(depName)) {
                     args[i] = callDep(depName);
                 } else if (map.p) {
@@ -292,6 +309,10 @@ var requirejs, require, define;
 
     requirejs = require = req = function (deps, callback, relName, forceSync, alt) {
         if (typeof deps === "string") {
+            if (handlers[deps]) {
+                //callback in this case is really relName
+                return handlers[deps](callback);
+            }
             //Just return the module wanted. In this scenario, the
             //deps arg is the module name, and second arg (if passed)
             //is just the relName.
