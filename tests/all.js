@@ -18,6 +18,7 @@ doh.registerUrl("missing", "../missing/missing.html");
 doh.registerUrl("insertRequire", "../insertRequire/insertRequire.html", 4000);
 doh.registerUrl("circular", "../circular/circular.html");
 doh.registerUrl("circular414", "../circular/414/414.html");
+doh.registerUrl("circularTranspiler", "../circular/transpiler/transpiler.html");
 doh.registerUrl("relativePaths", "../relativePaths/relativePaths.html");
 doh.registerUrl("errback", "../errback/errback.html");
 doh.registerUrl("specialDeps", "../specialDeps/specialDeps.html");

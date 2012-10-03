@@ -157,7 +157,7 @@ var requirejs, require, define;
             main.apply(undef, args);
         }
 
-        if (!defined.hasOwnProperty(name)) {
+        if (!defined.hasOwnProperty(name) && !defining.hasOwnProperty(name)) {
             throw new Error('No ' + name);
         }
         return defined[name];
@@ -276,12 +276,14 @@ var requirejs, require, define;
                 } else if (depName === "module") {
                     //CommonJS module spec 1.1
                     cjsModule = args[i] = handlers.module(name);
-                } else if (defined.hasOwnProperty(depName) || waiting.hasOwnProperty(depName)) {
+                } else if (defined.hasOwnProperty(depName) ||
+                           waiting.hasOwnProperty(depName) ||
+                           defining.hasOwnProperty(depName)) {
                     args[i] = callDep(depName);
                 } else if (map.p) {
                     map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
                     args[i] = defined[depName];
-                } else if (!defining[depName]) {
+                } else {
                     throw new Error(name + ' missing ' + depName);
                 }
             }
