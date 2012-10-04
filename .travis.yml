@@ -4,7 +4,6 @@ node_js:  0.8
 before_script:
   - git clone git://github.com/jrburke/r.js.git ../r.js
   - cp ../r.js/dist/r.js ../r.js/
-  - ./buildTest.sh
   - node tests/server.js &
   - sleep 1
 
