@@ -4,27 +4,16 @@
     <title>almond: Shim Test</title>
     <script type="text/javascript" src="../doh/runner.js"></script>
     <script type="text/javascript" src="../doh/_browserRunner.js"></script>
-    <script type="text/javascript" src="shim-built.js"></script>
+    <script src="../../almond.js"></script>
+    <script type="text/javascript" src="shim.js"></script>
     <script type="text/javascript">
 	var master = new doh.Deferred();
 
         require({
                 baseUrl: './',
-                shim: {
-                    a: {
-                        exports: function () {
-                            return this.A.name;
-                        }
-                    },
-                    'b': ['a', 'd'],
-                    'c': {
-                        deps: ['a', 'b'],
-                        exports: 'C'
-                    }
-                }
             },
-            ['a', 'c'],
-            function(a, c) {
+            ['a', 'c', 'e'],
+            function(a, c, e) {
                 doh.register(
                     'shimBasic',
                     [
@@ -34,6 +23,7 @@
                             t.is('b', c.b.name);
                             t.is('c', c.name);
                             t.is('d', c.b.dValue.name);
+                            t.is('e', e.name);
                         }
                     ]
                 );
