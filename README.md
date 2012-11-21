@@ -11,7 +11,7 @@ they do not want to include a full AMD loader like RequireJS, since they do not 
 Some use cases, like mobile, are very sensitive to file sizes.
 
 By including almond in the built file, there is no need for RequireJS.
-almond is **1 kilobyte** when minified with Closure Compiler and gzipped.
+almond is around **1 kilobyte** when minified with Closure Compiler and gzipped.
 
 Since it can support certain types of loader plugin-optimized resources, it is a great
 fit for a library that wants to use [text templates](http://requirejs.org/docs/api.html#text)
