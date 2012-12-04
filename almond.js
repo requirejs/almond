@@ -181,6 +181,12 @@ var requirejs, require, define;
         return [prefix, name];
     }
 
+    function onResourceLoad(name, defined, deps){
+        if(requirejs.onResourceLoad && name){
+            requirejs.onResourceLoad({defined:defined}, {id:name}, deps);
+        }
+    }
+
     /**
      * Makes a name map, normalizing the name, and using a plugin
      * for normalization if necessary. Grabs a ref to plugin
@@ -312,6 +318,8 @@ var requirejs, require, define;
             //worry about defining if have a module name.
             defined[name] = callback;
         }
+
+        onResourceLoad(name, defined, args);
     };
 
     requirejs = require = req = function (deps, callback, relName, forceSync, alt) {
