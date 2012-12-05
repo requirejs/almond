@@ -1,5 +1,5 @@
 /**
- * almond 0.2.1 Copyright (c) 2011-2012, The Dojo Foundation All Rights Reserved.
+ * almond 0.2.2 Copyright (c) 2011-2012, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/almond for details
  */
@@ -381,7 +381,7 @@ var requirejs, require, define;
             deps = [];
         }
 
-        if (!hasProp(defined, name)) {
+        if (!hasProp(defined, name) && !hasProp(waiting, name)) {
             waiting[name] = [name, deps, callback];
         }
     };

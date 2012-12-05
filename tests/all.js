@@ -24,3 +24,4 @@ doh.registerUrl("relativePaths", "../relativePaths/relativePaths.html");
 doh.registerUrl("errback", "../errback/errback.html");
 doh.registerUrl("specialDeps", "../specialDeps/specialDeps.html");
 doh.registerUrl("hasOwnPropertyTests", "../hasOwnProperty/hasOwnProperty.html");
+doh.registerUrl("firstDefine", "../firstDefine/firstDefine.html");
