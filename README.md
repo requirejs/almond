@@ -159,3 +159,9 @@ modules from the network.
 
 * Contact the [requirejs list](https://groups.google.com/group/requirejs).
 * Open issues in the [issue tracker](https://github.com/jrburke/almond/issues).
+
+## Contributing
+
+Almond follows the
+[same contribution model as requirejs](http://requirejs.org/docs/contributing.html)
+and is considered a sub-project of requirejs.
