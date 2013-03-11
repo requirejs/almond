@@ -150,7 +150,7 @@ Where start.frag could look like this:
         root.libGlobalName = factory();
     }
 }(this, function () {
-
+    //almond, and your modules will be inlined here
 ```
 
 and end.frag is like this:
