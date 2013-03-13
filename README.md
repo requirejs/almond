@@ -33,10 +33,7 @@ It is best used for libraries or apps that use AMD and:
 
 * optimize all the modules into one file -- no dynamic code loading.
 * all modules have IDs and dependency arrays in their define() calls -- the RequireJS optimizer will take care of this for you.
-* do not use requirejs.ready(). If you use explicit dependencies for all modules, and you place
-the optimized file in a script tag before the ending body tag, then this should not be a problem.
-* the modules avoid circular dependencies. Some kinds may work, but you will likely have to manually control
-the module listing order in the optimizer build profile.
+* only have **one** requirejs.config() or require.config() call.
 * do not use [RequireJS multiversion support/contexts](http://requirejs.org/docs/api.html#multiversion).
 * do not use require.toUrl() or require.nameToUrl().
 * do not use [packages/packagePaths config](http://requirejs.org/docs/api.html#packages). If you need to use packages that have a main property, [volo](https://github.com/volojs/volo) can create an adapter module so that it can work without this config. Use the `amdify add` command to add the dependency to your project.
