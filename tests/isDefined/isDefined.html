@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>almond: isDefined test</title>
+    <script src="../doh/runner.js"></script>
+    <script src="../doh/_browserRunner.js"></script>
+    <script src="../../almond.js"></script>
+    <script>
+        define('a', function () {});
+        define('b', function () {});
+        require(['a'], function () {
+            doh.register(
+                'isDefined',
+                [
+                    function isDefined(t){
+                        t.is(true, define.isDefined('a'));
+                        t.is(true, define.isDefined('b'));
+                        t.is(false, define.isDefined('c'));
+                    }
+                ]
+            );
+            doh.run();
+        });
+    </script>
+</head>
+<body>
+    <h1>almond: isDefined test</h1>
+    <p>A method which reports whether a module has been defined</p>
+    <p>Check console for messages</p>
+</body>
+</html>
