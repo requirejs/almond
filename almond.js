@@ -399,6 +399,10 @@ var requirejs, require, define;
         }
     };
 
+    define.isDefined = function (name) {
+        return hasProp(defined, name) || hasProp(waiting, name);
+    };
+
     define.amd = {
         jQuery: true
     };
