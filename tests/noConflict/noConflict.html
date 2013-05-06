@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>almond: Define Double Test</title>
+    <script src="../doh/runner.js"></script>
+    <script src="../doh/_browserRunner.js"></script>
+    <script>
+        var require = {
+            test: "pre-noConflict require"
+        }
+        var requirejs = {
+            test: "pre-noConflict requirejs"
+        }
+        var define = {
+            test: "pre-noConflict define"
+        }
+    </script>
+    <script src="../../almond.js"></script>
+    <script>
+
+        doh.register(
+            "noConflictTests", 
+            [
+                function(t) {
+                    t.assertEqual(undefined, require.test);
+                    t.assertEqual(undefined, requirejs.test);
+                    t.assertEqual(undefined, define.test);
+
+                    var noConflictRequire = require.noConflict();
+                    t.assertEqual("pre-noConflict require", require.test);
+                    t.assertEqual("pre-noConflict requirejs", requirejs.test);
+                    t.assertEqual("pre-noConflict define", define.test);
+
+                    t.assertNotEqual(undefined, noConflictRequire);
+                    t.assertNotEqual(undefined, noConflictRequire.require);
+                    t.assertNotEqual(undefined, noConflictRequire.requirejs);
+                    t.assertNotEqual(undefined, noConflictRequire.define);
+                    t.assertEqual(noConflictRequire.require, noConflictRequire.requirejs);
+
+                    t.assertEqual(undefined, noConflictRequire.require.test);
+                    t.assertEqual(undefined, noConflictRequire.requirejs.test);
+                    t.assertEqual(undefined, noConflictRequire.define.test);
+                }
+            ]
+        );
+        
+        doh.run();
+    </script>
+</head>
+<body>
+    <h1>almond: noConflict Tests</h1>
+    <p>Make sure calling noConflict returns pre-existing version of require, requirejs and define.</p>
+    <p>Check console for messages</p>
+</body>
+</html>

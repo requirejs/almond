@@ -8,8 +8,14 @@
 /*jslint sloppy: true */
 /*global setTimeout: false */
 
-var requirejs, require, define;
 (function (undef) {
+    var root = this;
+
+    var previousRequirejs = root.requirejs,
+        previousRequire = root.require,
+        previousDefine = root.define,
+        requirejs, require, define;
+
     var main, req, makeMap, handlers,
         defined = {},
         waiting = {},
@@ -286,8 +292,8 @@ var requirejs, require, define;
                     //CommonJS module spec 1.1
                     cjsModule = args[i] = handlers.module(name);
                 } else if (hasProp(defined, depName) ||
-                           hasProp(waiting, depName) ||
-                           hasProp(defining, depName)) {
+                    hasProp(waiting, depName) ||
+                    hasProp(defining, depName)) {
                     args[i] = callDep(depName);
                 } else if (map.p) {
                     map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
@@ -304,7 +310,7 @@ var requirejs, require, define;
                 //favor that over return value and exports. After that,
                 //favor a non-undefined return value over exports use.
                 if (cjsModule && cjsModule.exports !== undef &&
-                        cjsModule.exports !== defined[name]) {
+                    cjsModule.exports !== defined[name]) {
                     defined[name] = cjsModule.exports;
                 } else if (ret !== undef || !usingExports) {
                     //Use the return value from the function.
@@ -399,7 +405,47 @@ var requirejs, require, define;
         }
     };
 
+    /**
+     * Set the global require, requirejs and define variables
+     * back to what they were before this copy of almond was loaded
+     * and return this versions global variables.
+     *
+     * @return Object An object containing the require, requirejs and
+     * defined global variables defined by this copy of Almond.
+     */
+    requirejs.noConflict = function() {
+        root.requirejs = previousRequirejs;
+        root.require = previousRequire;
+
+        return {
+            require: this,
+            requirejs: this,
+            define: define.noConflict()
+        };
+    };
+
+    /**
+     * Set the global define variable back to what it was
+     * before this copy of almond was loaded and return this
+     * version's global define variable.
+     *
+     * @return Function The define function defined by this copy 
+     * of Almond.
+     */
+    define.noConflict = function() {
+        root.define = previousDefine;
+
+        return this;
+    };
+
     define.amd = {
         jQuery: true
     };
+
+    /**
+     * Set the global defined, require and requirejs variables.
+     */
+    root.define = define;
+    root.require = require;
+    root.requirejs = requirejs;
 }());
