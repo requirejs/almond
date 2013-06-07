@@ -4,6 +4,10 @@
     "version": "0.2.5",
     "homepage": "http://github.com/jrburke/almond",
     "author": "James Burke <jrburke@gmail.com> (http://github.com/jrburke)",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/jrburke/almond.git"
+    },
     "licenses": [
         {
             "type": "BSD",
