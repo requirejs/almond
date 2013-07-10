@@ -386,7 +386,7 @@ var requirejs, require, define;
     define = function (name, deps, callback) {
 
         //This module may not have dependencies
-        if (!deps.splice) {
+        if (typeof deps !== 'undefined' && !deps.splice) {
             //deps is not an array, so probably means
             //an object literal or factory function for
             //the value. Adjust args.
