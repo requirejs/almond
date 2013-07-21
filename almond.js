@@ -383,6 +383,11 @@ var requirejs, require, define;
         return req;
     };
 
+    /**
+     * Expose module registry for debugging and tooling
+     */
+    requirejs._defined = defined;
+
     define = function (name, deps, callback) {
 
         //This module may not have dependencies
