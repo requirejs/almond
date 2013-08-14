@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>almond: Registry Test</title>
+    <script type="text/javascript" src="../doh/runner.js"></script>
+    <script type="text/javascript" src="../doh/_browserRunner.js"></script>
+    <script type="text/javascript" src="../../almond.js"></script>
+    <script type="text/javascript">
+        define('defined', [], function() {});
+        define('waiting', [], function() {});
+        require('defined');
+        doh.register(
+            'registry',
+            [
+                function registry(t) {
+                    t.t('defined' in requirejs._defined);
+                    t.f('defined' in requirejs._waiting);
+                    t.t('waiting' in requirejs._waiting);
+                    t.f('waiting' in requirejs._defined);
+                }
+            ]
+        );
+        doh.run();
+    </script>
+</head>
+<body>
+    <h1>almond: Registry Test</h1>
+    <p>Ensure the module registry is exposed for debugging and tooling purposes.
+        <a href="https://github.com/jrburke/almond/pull/66">More info</a></p>
+    <p>Check console for messages</p>
+</body>
+</html>
+
