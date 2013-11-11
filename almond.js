@@ -265,7 +265,7 @@ var requirejs, require, define;
         relName = relName || name;
 
         //Call the callback to define the module, if necessary.
-        if (typeof callback === 'function') {
+        if (typeof callback === 'function' || typeof callback === 'undefined') {
 
             //Pull out the defined dependencies and pass the ordered
             //values to the callback.
@@ -297,7 +297,9 @@ var requirejs, require, define;
                 }
             }
 
-            ret = callback.apply(defined[name], args);
+            ret = typeof callback !== 'undefined'
+                ? callback.apply(defined[name], args)
+                : null;
 
             if (name) {
                 //If setting exports via "module" is in play,
