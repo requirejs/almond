@@ -27,3 +27,4 @@ doh.registerUrl("hasOwnPropertyTests", "../hasOwnProperty/hasOwnProperty.html");
 doh.registerUrl("firstDefine", "../firstDefine/firstDefine.html");
 doh.registerUrl("topRelativeRequire", "../topRelativeRequire/topRelativeRequire.html");
 doh.registerUrl("configDeps", "../configDeps/configDeps.html");
+doh.registerUrl("defineNoCallback", "../defineNoCallback/defineNoCallback.html");

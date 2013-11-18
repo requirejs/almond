@@ -1,7 +1,7 @@
 {
     "name": "almond",
     "description": "A minimal AMD API implementation for use in optimized browser builds.",
-    "version": "0.2.6",
+    "version": "0.2.7",
     "homepage": "http://github.com/jrburke/almond",
     "author": "James Burke <jrburke@gmail.com> (http://github.com/jrburke)",
     "repository": {
