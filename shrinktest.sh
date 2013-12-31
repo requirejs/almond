@@ -1,6 +1,6 @@
 #!/bin/sh
 rm almond.min.js.gz
-~/scripts/closure.sh almond.js almond.min.js
+uglifyjs -c -m -o almond.min.js almond.js
 gzip almond.min.js
 ls -la almond.min.js.gz
 
