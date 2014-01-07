@@ -16,7 +16,8 @@ var requirejs, require, define;
         config = {},
         defining = {},
         hasOwn = Object.prototype.hasOwnProperty,
-        aps = [].slice;
+        aps = [].slice,
+        jsSuffixRegExp = /\.js$/;
 
     function hasProp(obj, prop) {
         return hasOwn.call(obj, prop);
@@ -35,7 +36,6 @@ var requirejs, require, define;
             foundI, foundStarMap, starI, i, j, part,
             baseParts = baseName && baseName.split("/"),
             map = config.map,
-            jsSuffixRegExp = /\.js$/,
             starMap = (map && map['*']) || {};
 
         //Adjust any relative paths.
