@@ -28,3 +28,4 @@ doh.registerUrl("firstDefine", "../firstDefine/firstDefine.html");
 doh.registerUrl("topRelativeRequire", "../topRelativeRequire/topRelativeRequire.html");
 doh.registerUrl("configDeps", "../configDeps/configDeps.html");
 doh.registerUrl("defineNoCallback", "../defineNoCallback/defineNoCallback.html");
+doh.registerUrl("packagesNode", "../packagesNode/packagesNode.html");
