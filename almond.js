@@ -1,5 +1,5 @@
 /**
- * @license almond 0.2.8 Copyright (c) 2011-2012, The Dojo Foundation All Rights Reserved.
+ * @license almond 0.2.9 Copyright (c) 2011-2014, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/almond for details
  */
@@ -54,8 +54,7 @@ var requirejs, require, define;
                 lastIndex = name.length - 1;
 
                 // Node .js allowance:
-                if (config.pkgs && hasProp(config.pkgs, baseParts[0]) &&
-                    jsSuffixRegExp.test(name[lastIndex])) {
+                if (config.nodeIdCompat && jsSuffixRegExp.test(name[lastIndex])) {
                     name[lastIndex] = name[lastIndex].replace(jsSuffixRegExp, '');
                 }
 
@@ -328,7 +327,6 @@ var requirejs, require, define;
     };
 
     requirejs = require = req = function (deps, callback, relName, forceSync, alt) {
-        var i, pkgs;
         if (typeof deps === "string") {
             if (handlers[deps]) {
                 //callback in this case is really relName
@@ -344,13 +342,6 @@ var requirejs, require, define;
             config = deps;
             if (config.deps) {
                 req(config.deps, config.callback);
-            }
-            pkgs = config.packages;
-            if (config.packages) {
-                config.pkgs = {};
-                for (i = 0; i < pkgs.length; i++) {
-                    config.pkgs[pkgs[i].name || pkgs[i]] = true;
-                }
             }
             if (!callback) {
                 return;
