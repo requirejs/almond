@@ -141,7 +141,7 @@ Where start.frag could look like this:
         //in another project. That other project will only
         //see this AMD call, not the internal modules in
         //the closure below.
-        define(factory);
+        define([], factory);
     } else {
         //Browser globals case. Just assign the
         //result to a property on the global.
@@ -182,10 +182,16 @@ It usually means that there is a define()'d module, but it is missing a name,
 something that looks like this:
 
     define(function () {});
+    //or
+    define([], function () {});
+
 
 when it should look like:
 
     define('someName', function () {});
+    //or
+    define('someName', [], function () {});
+
 
 This is usually a sign that the tool you used to combine all the modules
 together did not properly name an anonymous AMD module.
