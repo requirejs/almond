@@ -301,7 +301,18 @@ var requirejs, require, define;
                     map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
                     args[i] = defined[depName];
                 } else {
-                    throw new Error(name + ' missing ' + depName);
+	                // Try to use requirejs
+	                if ((typeof window.requirejs === 'function') && window.requirejs.defined(depName)) {
+		                args[i] = window.requirejs(depName);
+	                }
+	                if (args[i] === undefined) {
+		                if (window[depName] !== undefined) {
+			                // Use the global
+			                args[i] = window[depName];
+		                } else {
+			                throw new Error(name + ' missing ' + depName);
+		                }
+	                }
                 }
             }
 
