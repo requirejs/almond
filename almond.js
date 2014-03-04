@@ -397,7 +397,14 @@ var requirejs, require, define;
     /**
      * Expose module registry for debugging and tooling
      */
-    requirejs._defined = defined;
+    req._defined = defined;
+
+    /**
+     * Expose the defined() function with the same signature as require.js
+     */
+    req.defined = function (name) {
+        return hasProp(defined, name);
+    };
 
     define = function (name, deps, callback) {
 
