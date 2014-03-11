@@ -52,14 +52,14 @@ The [text](http://requirejs.org/docs/api.html#text) and
 
 ## Download
 
-[Latest release](https://github.com/jrburke/almond/raw/latest/almond.js)
+[Latest release](https://github.com/jrburke/almond/raw/0.2.9/almond.js)
 
 
 ## Usage
 
 [Download the RequireJS optimizer](http://requirejs.org/docs/download.html#rjs).
 
-[Download the current release of almond.js](https://github.com/jrburke/almond/raw/latest/almond.js).
+[Download the current release of almond.js](https://github.com/jrburke/almond/raw/0.2.9/almond.js).
 
 Run the optimizer using [Node](http://nodejs.org) (also [works in Java](https://github.com/jrburke/r.js/blob/master/README.md)):
 
