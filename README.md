@@ -27,6 +27,8 @@ to export, not the AMD API. See the usage section below for more details.
 So, you get great code cleanliness with AMD and the use of powerful loader plugins
 in a tiny wrapper that makes it easy for others to use your code even if they do not use AMD.
 
+If you want a single file build output but without the module APIs included, you might want to consider [AMDclean](https://github.com/gfranko/amdclean).
+
 ## Restrictions
 
 It is best used for libraries or apps that use AMD and:
@@ -34,6 +36,7 @@ It is best used for libraries or apps that use AMD and:
 * optimize all the modules into one file -- no dynamic code loading.
 * all modules have IDs and dependency arrays in their define() calls -- the RequireJS optimizer will take care of this for you.
 * only have **one** requirejs.config() or require.config() call.
+* the requirejs.config/require.config call needs tbe included in the build output. This is particularly important for making sure any [map config](http://requirejs.org/docs/api.html#config-map) use still works.
 * do not use the `var require = {};` style of [passing config](http://requirejs.org/docs/api.html#config).
 * do not use [RequireJS multiversion support/contexts](http://requirejs.org/docs/api.html#multiversion).
 * do not use require.toUrl() or require.nameToUrl().
@@ -48,7 +51,6 @@ What is supported:
 can access those inlined resources synchronously after the optimization pass.
 The [text](http://requirejs.org/docs/api.html#text) and
 [CoffeeScript](https://github.com/jrburke/require-cs) plugins are two such plugins.
-
 
 ## Download
 
