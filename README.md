@@ -36,7 +36,7 @@ It is best used for libraries or apps that use AMD and:
 * optimize all the modules into one file -- no dynamic code loading.
 * all modules have IDs and dependency arrays in their define() calls -- the RequireJS optimizer will take care of this for you.
 * only have **one** requirejs.config() or require.config() call.
-* the requirejs.config/require.config call needs tbe included in the build output. This is particularly important for making sure any [map config](http://requirejs.org/docs/api.html#config-map) use still works.
+* the requirejs.config/require.config call needs to be included in the build output. This is particularly important for making sure any [map config](http://requirejs.org/docs/api.html#config-map) use still works.
 * do not use the `var require = {};` style of [passing config](http://requirejs.org/docs/api.html#config).
 * do not use [RequireJS multiversion support/contexts](http://requirejs.org/docs/api.html#multiversion).
 * do not use require.toUrl() or require.nameToUrl().
