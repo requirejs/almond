@@ -66,7 +66,12 @@ var requirejs, require, define;
                     if (part === ".") {
                         name.splice(i, 1);
                         i -= 1;
-                    } else if (part === "..") {
+                    }
+                }
+
+                for (i = 0; i < name.length; i += 1) {
+                    part = name[i];
+                    if (part === "..") {
                         if (i === 1 && (name[2] === '..' || name[0] === '..')) {
                             //End of the line. Keep at least one non-dot
                             //path segment at the front so it can be mapped
