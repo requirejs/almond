@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>almond: requireInDefine Test</title>
+    <script type="text/javascript" src="../doh/runner.js"></script>
+    <script type="text/javascript" src="../doh/_browserRunner.js"></script>
+    <script type="text/javascript" src="../../almond.js"></script>
+    <script type="text/javascript">
+        var globalB, globalC;
+
+        define('b', function() {
+            globalB = 'b';
+        });
+
+        define('c', function() {
+            globalC = 'c';
+        });
+
+        define('d', {
+            name: 'd'
+        });
+
+        define('a', ['require'], function (req) {
+            require(['b']);
+            req(['c']);
+            req(['d'], function(d) {
+                doh.register(
+                    'requireInDefine',
+                    [
+                        function requireInDefine(t){
+                            t.is('b', globalB);
+                            t.is('c', globalC);
+                            t.is('d', d.name);
+                        }
+                    ]
+                );
+                doh.run();
+            });
+        });
+
+        require(['a']);
+    </script>
+</head>
+<body>
+    <h1>almond: requireInDefine Test</h1>
+
+    <p>require(['a']) inside a define. More info:
+    <a href="https://github.com/jrburke/almond/issues/87">87</a>.</p>
+
+    <p>Check console for messages</p>
+</body>
+</html>
