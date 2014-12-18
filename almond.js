@@ -13,6 +13,7 @@ var requirejs, require, define;
     var main, req, makeMap, handlers,
         defined = {},
         waiting = {},
+        seen = {},
         config = {},
         defining = {},
         hasOwn = Object.prototype.hasOwnProperty,
@@ -406,8 +407,10 @@ var requirejs, require, define;
      * Expose module registry for debugging and tooling
      */
     requirejs._defined = defined;
+    requirejs._eak_seen = seen;
 
     define = function (name, deps, callback) {
+        seen[name] = true;
 
         //This module may not have dependencies
         if (!deps.splice) {
