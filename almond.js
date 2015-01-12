@@ -408,6 +408,9 @@ var requirejs, require, define;
     requirejs._defined = defined;
 
     define = function (name, deps, callback) {
+        if (!deps) {
+            throw new Error('define called with too few arguments.');
+        }
 
         //This module may not have dependencies
         if (!deps.splice) {
