@@ -44,6 +44,12 @@ define('a/sub/one',['c', 'c/sub'], function (c, csub) {
     };
 });
 
+define('d', ['./c'], function(c) {
+    return {
+        c: c
+    }
+});
+
 require({
         baseUrl: './',
         paths: {
@@ -56,11 +62,14 @@ require({
             },
             'a/sub/one': {
                 'c': 'c2'
+            },
+            'd': {
+                'c': 'c1'
             }
         }
     },
-    ['a', 'b', 'c', 'a/sub/one'],
-    function(a, b, c, one) {
+    ['a', 'b', 'c', 'a/sub/one', 'd'],
+    function(a, b, c, one, d) {
         doh.register(
             'mapConfig',
             [
@@ -72,6 +81,7 @@ require({
                     t.is('c', b.c.name);
                     t.is('c/sub', b.csub.name);
                     t.is('c', c.name);
+                    t.is('c1', d.c.name);
                 }
             ]
         );
