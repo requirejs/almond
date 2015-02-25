@@ -49,7 +49,6 @@ var requirejs, require, define;
                 //module. For instance, baseName of "one/two/three", maps to
                 //"one/two/three.js", but we want the directory, "one/two" for
                 //this normalization.
-                baseParts = baseParts.slice(0, baseParts.length - 1);
                 name = name.split('/');
                 lastIndex = name.length - 1;
 
@@ -58,7 +57,7 @@ var requirejs, require, define;
                     name[lastIndex] = name[lastIndex].replace(jsSuffixRegExp, '');
                 }
 
-                name = baseParts.concat(name);
+                name = baseParts.slice(0, baseParts.length - 1).concat(name);
 
                 //start trimDots
                 for (i = 0; i < name.length; i += 1) {
