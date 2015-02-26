@@ -1,28 +1,29 @@
 {
-    "name": "almond",
-    "description": "A minimal AMD API implementation for use in optimized browser builds.",
-    "version": "0.3.0",
-    "homepage": "http://github.com/jrburke/almond",
-    "author": "James Burke <jrburke@gmail.com> (http://github.com/jrburke)",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/jrburke/almond.git"
+  "name": "almond",
+  "description": "A minimal AMD API implementation for use in optimized browser builds.",
+  "version": "0.3.0",
+  "homepage": "http://github.com/jrburke/almond",
+  "author": "James Burke <jrburke@gmail.com> (http://github.com/jrburke)",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jrburke/almond.git"
+  },
+  "licenses": [
+    {
+      "type": "BSD",
+      "url": "https://github.com/jrburke/almond/blob/master/LICENSE"
     },
-    "licenses": [
-        {
-            "type": "BSD",
-            "url": "https://github.com/jrburke/almond/blob/master/LICENSE"
-        },
-        {
-            "type": "MIT",
-            "url": "https://github.com/jrburke/almond/blob/master/LICENSE"
-        }
-    ],
-    "main": "almond.js",
-    "engines": {
-        "node": ">=0.4.0"
-    },
-    "devDependencies": {
-        "connect": "*"
+    {
+      "type": "MIT",
+      "url": "https://github.com/jrburke/almond/blob/master/LICENSE"
     }
+  ],
+  "main": "almond.js",
+  "engines": {
+    "node": ">=0.4.0"
+  },
+  "devDependencies": {
+    "connect": "^3.3.4",
+    "serve-static": "^1.9.1"
+  }
 }
