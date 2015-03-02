@@ -173,13 +173,16 @@ After the build, then the built file should be structured like so:
 
 Explanations of common errors:
 
-### deps is undefined
+### incorrect module build, no module name
 
-Where this line is mentioned:
+In almond 3.0.0 and earlier, this would show up as "deps is undefined", where
+this line is mentioned:
 
     if (!deps.splice) {
 
-It usually means that there is a define()'d module, but it is missing a name,
+In 3.0.1+ the error is explicitly: "incorrect module build, no module name".
+
+This means that there is a define()'d module, but it is missing a name,
 something that looks like this:
 
     define(function () {});
@@ -196,6 +199,14 @@ when it should look like:
 
 This is usually a sign that the tool you used to combine all the modules
 together did not properly name an anonymous AMD module.
+
+Multiple modules built into a single file **must** have names in the define calls.
+Otherwise almond has no way to assign the module to a name key for use in the code.
+
+The fix is to use a build tool that understand AMD modules and inserts the module
+IDs in the build. The
+[requirejs optimizer](http://requirejs.org/docs/optimization.html) is a build tool
+that can do this correctly.
 
 ### x missing y
 

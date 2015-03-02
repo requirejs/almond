@@ -406,6 +406,9 @@ var requirejs, require, define;
     requirejs._defined = defined;
 
     define = function (name, deps, callback) {
+        if (typeof name !== 'string') {
+            throw new Error('See almond README: incorrect module build, no module name');
+        }
 
         //This module may not have dependencies
         if (!deps.splice) {

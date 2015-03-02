@@ -30,3 +30,4 @@ doh.registerUrl("configDeps", "../configDeps/configDeps.html");
 doh.registerUrl("defineNoCallback", "../defineNoCallback/defineNoCallback.html");
 doh.registerUrl("packagesNode", "../packagesNode/packagesNode.html");
 doh.registerUrl("requireInDefine", "../requireInDefine/requireInDefine.html");
+doh.registerUrl("badAnonDefine", "../badAnonDefine/badAnonDefine.html");
