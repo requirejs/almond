@@ -1,7 +1,6 @@
 /**
- * @license almond 0.3.1 Copyright (c) 2011-2014, The Dojo Foundation All Rights Reserved.
- * Available via the MIT or new BSD license.
- * see: http://github.com/jrburke/almond for details
+ * @license almond 0.3.1 Copyright jQuery Foundation and other contributors.
+ * Released under MIT license, http://github.com/requirejs/almond/LICENSE
  */
 //Going sloppy to avoid 'use strict' string cost, but strict practices should
 //be followed.

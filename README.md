@@ -14,7 +14,7 @@ almond is around **1 kilobyte** when minified with Closure Compiler and gzipped.
 
 Since it can support certain types of loader plugin-optimized resources, it is a great
 fit for a library that wants to use [text templates](http://requirejs.org/docs/api.html#text)
-or [CoffeeScript](https://github.com/jrburke/require-cs) as part of
+or [CoffeeScript](https://github.com/requirejs/require-cs) as part of
 their project, but get a tiny download in one file after using the
 [RequireJS Optimizer](http://requirejs.org/docs/optimization.html).
 
@@ -49,20 +49,20 @@ What is supported:
 * loader plugins that can inline their resources into optimized files, and
 can access those inlined resources synchronously after the optimization pass.
 The [text](http://requirejs.org/docs/api.html#text) and
-[CoffeeScript](https://github.com/jrburke/require-cs) plugins are two such plugins.
+[CoffeeScript](https://github.com/requirejs/require-cs) plugins are two such plugins.
 
 ## Download
 
-[Latest release](https://github.com/jrburke/almond/raw/latest/almond.js)
+[Latest release](https://github.com/requirejs/almond/raw/latest/almond.js)
 
 
 ## Usage
 
 [Download the RequireJS optimizer](http://requirejs.org/docs/download.html#rjs).
 
-[Download the current release of almond.js](https://github.com/jrburke/almond/raw/latest/almond.js).
+[Download the current release of almond.js](https://github.com/requirejs/almond/raw/latest/almond.js).
 
-Run the optimizer using [Node](http://nodejs.org) (also [works in Java](https://github.com/jrburke/r.js/blob/master/README.md)):
+Run the optimizer using [Node](http://nodejs.org) (also [works in Java](https://github.com/requirejs/r.js/blob/master/README.md)):
 
     node r.js -o baseUrl=. name=path/to/almond include=main out=main-built.js wrap=true
 
@@ -79,7 +79,7 @@ wrap=true will add this wrapper around the main-built.js contents (which will be
 If you do not want that wrapper, leave off the wrap=true argument.
 
 These optimizer arguments can also be used in a build config object, so it can be used
-in [runtime-generated server builds](https://github.com/jrburke/r.js/blob/master/build/tests/http/httpBuild.js).
+in [runtime-generated server builds](https://github.com/requirejs/r.js/blob/master/build/tests/http/httpBuild.js).
 
 
 ## Triggering module execution <a name="execution"></a>
@@ -230,7 +230,7 @@ modules from the network.
 ## How to get help
 
 * Contact the [requirejs list](https://groups.google.com/group/requirejs).
-* Open issues in the [issue tracker](https://github.com/jrburke/almond/issues).
+* Open issues in the [issue tracker](https://github.com/requirejs/almond/issues).
 
 ## Contributing
 

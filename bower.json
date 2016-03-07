@@ -1,5 +1,8 @@
 {
   "name": "almond",
+  "license": [
+    "MIT"
+  ],
   "version": "0.3.1",
   "main": "almond.js",
   "ignore": [
