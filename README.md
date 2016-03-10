@@ -169,6 +169,14 @@ After the build, then the built file should be structured like so:
 * modules for your lib, including 'main'
 * end.frag
 
+## License
+
+MIT
+
+## Code of Conduct
+
+[jQuery Foundation Code of Conduct](https://jquery.org/conduct/).
+
 ## Common errors
 
 Explanations of common errors:
