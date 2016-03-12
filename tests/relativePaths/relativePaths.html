@@ -26,9 +26,16 @@
             };
         });
 
-        define('../../ext',[], function(){
+        define('../../ext',['./extb'], function(e){
             return {
-                name: 'ext'
+                name: 'ext',
+                extB: e
+            };
+        });
+
+        define('../../extb',[], function(){
+            return {
+                name: 'extb'
             };
         });
 
@@ -50,6 +57,7 @@
                         t.is('foo/bar/c', main.fooB.barC.name);
                         t.is('fu/a', main.fooB.barC.fuA.name);
                         t.is('ext', main.ext.name);
+                        t.is('extb', main.ext.extB.name);
                     }
                 ]
             );
