@@ -25,6 +25,7 @@ doh.registerUrl("errback", "../errback/errback.html");
 doh.registerUrl("specialDeps", "../specialDeps/specialDeps.html");
 doh.registerUrl("hasOwnPropertyTests", "../hasOwnProperty/hasOwnProperty.html");
 doh.registerUrl("firstDefine", "../firstDefine/firstDefine.html");
+doh.registerUrl("relativeId", "../relativeId/relativeId.html");
 doh.registerUrl("topRelativeRequire", "../topRelativeRequire/topRelativeRequire.html");
 doh.registerUrl("configDeps", "../configDeps/configDeps.html");
 doh.registerUrl("defineNoCallback", "../defineNoCallback/defineNoCallback.html");

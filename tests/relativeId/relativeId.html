@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>almond: Relative ID Require Test</title>
+    <script type="text/javascript" src="../doh/runner.js"></script>
+    <script type="text/javascript" src="../doh/_browserRunner.js"></script>
+    <script type="text/javascript" src="../../almond.js"></script>
+    <script type="text/javascript">
+        define('../../vendor/some-file', {
+            name: 'some-file'
+        });
+
+        define('../../vendor/some-lib', ['./some-file'],
+        function(someFile) {
+            return {
+
+                name: 'some-lib',
+                someFile: someFile
+            };
+        });
+
+        require(['../../vendor/some-lib'], function(someLib){
+            doh.register(
+                'realtiveId',
+                [
+                    function realtiveId(t){
+                        t.is('some-lib', someLib.name);
+                        t.is('some-file', someLib.someFile.name);
+                    }
+                ]
+            );
+            doh.run();
+        });
+    </script>
+</head>
+<body>
+    <h1>almond: Relative ID Require Test</h1>
+
+    <p>Make sure relative ID values are normalized as much as possible.More info:
+    <a href="https://github.com/requirejs/almond/issues/116">116</a>.</p>
+
+    <p>Check console for messages</p>
+</body>
+</html>
