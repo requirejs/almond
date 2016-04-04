@@ -1,2 +1,4 @@
 tests
 *.sh
+.jshintrc
+bower.json
