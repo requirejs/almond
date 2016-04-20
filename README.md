@@ -237,7 +237,6 @@ modules from the network.
 
 ## How to get help
 
-* Contact the [requirejs list](https://groups.google.com/group/requirejs).
 * Open issues in the [issue tracker](https://github.com/requirejs/almond/issues).
 
 ## Contributing
