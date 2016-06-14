@@ -2,3 +2,5 @@ tests
 *.sh
 .jshintrc
 bower.json
+.npmignore
+.travis.yml
