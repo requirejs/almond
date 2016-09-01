@@ -8,6 +8,7 @@ doh.registerUrl("mapConfigStarAdapter", "../mapConfig/mapConfigStarAdapter.html"
 doh.registerUrl("mapConfigSpecificity", "../mapConfig/mapConfigSpecificity.html");
 doh.registerUrl("mapConfigPlugin", "../mapConfig/mapConfigPlugin.html");
 doh.registerUrl("plugins", "../plugins/plugins.html");
+doh.registerUrl("pluginRelative", "../plugins/relative/pluginRelative.html");
 doh.registerUrl("pluginsMapSameName", "../plugins/pluginMapSameName/pluginMapSameName.html");
 doh.registerUrl("orderPlugin", "../plugins/order/order.html");
 doh.registerUrl("text", "../plugins/text.html");
