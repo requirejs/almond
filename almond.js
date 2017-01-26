@@ -177,7 +177,9 @@ var requirejs, require, define;
         }
 
         if (!hasProp(defined, name) && !hasProp(defining, name)) {
-            throw new Error('No ' + name);
+            var error = new Error('No ' + name);
+            error.code = 'MODULE_NOT_FOUND';
+            throw error;
         }
         return defined[name];
     }
@@ -311,7 +313,9 @@ var requirejs, require, define;
                     map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
                     args[i] = defined[depName];
                 } else {
-                    throw new Error(name + ' missing ' + depName);
+                    var error = new Error(name + ' missing ' + depName);
+                    error.code = 'MODULE_NOT_FOUND';
+                    throw error;
                 }
             }
 
