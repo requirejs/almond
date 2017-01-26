@@ -428,6 +428,8 @@ var requirejs, require, define;
         }
     };
 
+    define.defined = defined;
+
     define.amd = {
         jQuery: true
     };
