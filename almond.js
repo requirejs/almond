@@ -15,7 +15,7 @@ var requirejs, require, define;
         defining = {},
         hasOwn = Object.prototype.hasOwnProperty,
         aps = [].slice,
-        jsSuffixRegExp = /\.js$/;
+        jsSuffixRegExp = /(\.min)?\.js$/;   // Handle both .js and .min.js
 
     function hasProp(obj, prop) {
         return hasOwn.call(obj, prop);
@@ -412,6 +412,50 @@ var requirejs, require, define;
     define = function (name, deps, callback) {
         if (typeof name !== 'string') {
             throw new Error('See almond README: incorrect module build, no module name');
+        }
+
+        if (deps == null && typeof name === 'function') {
+            // deps is undefined and name is a function meaning this is
+            // an un-named/anonymous module.
+            //
+            // Anonymous modules (e.g. lodash.js, when.js) expect to be named
+            // through path mapping.  In this case, a name *may* be determined
+            // at run-time *if* we're in the browser and the script is being
+            // syhchronously loaded via the <script> tag.  In this case, we're
+            // guaranteed that the currently executing script is the *last* one
+            // in the current DOM -- in fact, it should be the last DOM
+            // element.
+            //      see http://ejohn.org/blog/degrading-script-tags/
+            var script, path,
+                url2PathRE = /^(?:[^:]*:\/\/[^\/]*)(\/)?(.*?)(?:\?.*)?$/;
+
+            callback = name;
+            name = '';
+            deps = [];
+
+            if (document && typeof document.getElementsByTagName === 'function') {
+                // We appear to be in a browser.
+                // Retrieve the *last* <script> tag and use its 'src' attribute
+                // to attempt to construct a reasonable module name.
+                script = aps.call(document.getElementsByTagName('script'),-1)[0],
+
+                // Extract the script path, excluding the URL scheme prefix
+                // information and query/fragment suffix.
+                path = script.src.replace(url2PathRE, '$1$2');
+
+                // Extract the baseName of the source
+                name = path.substring(path.lastIndexOf('/') + 1);
+
+                // Remove any '[.min].js' suffix.
+                name = name.replace(jsSuffixRegExp, '');
+
+            }
+
+            if (!name && console && console.warn) {
+                // Provide *some* indication of problems
+                console.warn('Un-namable anonymous module: '+ callback);
+
+            }
         }
 
         //This module may not have dependencies
